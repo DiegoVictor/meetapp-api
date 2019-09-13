@@ -20,6 +20,7 @@ Route.put('/users', UserController.update);
 Route.post('/files', Multer(storage).single('file'), FileController.store);
 
 Route.get('/scheduled', ScheduledController.index);
+Route.get('/scheduled/:id', ScheduledController.show);
 
 Route.get('/meetups', MeetupController.index);
 Route.post('/meetups', MeetupController.store);
