@@ -4,6 +4,7 @@ import { Op } from 'sequelize';
 import Meetup from '../models/Meetup';
 import File from '../models/File';
 import User from '../models/User';
+import Subscription from '../models/Subscription';
 
 class MeetupController {
   async index(req, res) {
@@ -16,6 +17,18 @@ class MeetupController {
         [Op.between]: [startOfDay(date), endOfDay(date)],
       };
     }
+
+    /**
+     * Get meetups that user have not subscribed to
+     */
+    const subscriptions = await Subscription.findAll({
+      where: {
+        user_id: req.user_id,
+      },
+      attributes: ['meetup_id'],
+    });
+
+    where.id = { [Op.notIn]: subscriptions.map(s => s.meetup_id) };
 
     const meetups = await Meetup.findAll({
       where,
