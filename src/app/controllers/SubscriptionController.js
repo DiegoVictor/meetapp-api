@@ -32,6 +32,7 @@ class SubscriptionCntroller {
         },
         {
           model: Subscription,
+          as: 'subscription',
           required: true,
           where: {
             user_id: req.user_id,
@@ -115,6 +116,26 @@ class SubscriptionCntroller {
     });
 
     return res.json({ user_id, meetup_id });
+  }
+
+  async delete(req, res) {
+    const { id } = req.params;
+    const subscription = await Subscription.findOne({
+      attributes: ['id'],
+      where: {
+        meetup_id: id,
+        user_id: req.user_id,
+      },
+    });
+
+    if (!subscription) {
+      return res.status(400).json({
+        error: 'Meetup or user does not exists',
+      });
+    }
+
+    subscription.destroy();
+    return res.json(subscription);
   }
 }
 export default new SubscriptionCntroller();
