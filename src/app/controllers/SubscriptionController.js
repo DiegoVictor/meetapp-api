@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { Op } from 'sequelize';
-import { isBefore } from 'date-fns';
+import { isBefore, setHours, setMinutes, setSeconds } from 'date-fns';
 import Meetup from '../models/Meetup';
 import User from '../models/User';
 import File from '../models/File';
@@ -13,7 +13,7 @@ class SubscriptionCntroller {
     const subscriptions = await Meetup.findAll({
       where: {
         date: {
-          [Op.gte]: new Date(),
+          [Op.gte]: setSeconds(setMinutes(setHours(new Date(), 0), 0), 0),
         },
       },
       attributes: [
