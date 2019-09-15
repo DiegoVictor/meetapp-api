@@ -26,6 +26,11 @@ class SubscriptionCntroller {
       ],
       include: [
         {
+          model: User,
+          as: 'organizer',
+          attributes: ['id', 'name'],
+        },
+        {
           model: Subscription,
           required: true,
           where: {
