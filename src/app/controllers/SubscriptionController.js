@@ -10,39 +10,36 @@ import SubscriptionMail from '../jobs/SubscriptionMail';
 
 class SubscriptionCntroller {
   async index(req, res) {
-    const subscriptions = await Subscription.findAll({
+    const subscriptions = await Meetup.findAll({
       where: {
-        user_id: req.user_id,
+        date: {
+          [Op.gte]: new Date(),
+        },
       },
-      attributes: ['user_id', 'meetup_id'],
+      attributes: [
+        'id',
+        'title',
+        'description',
+        'localization',
+        'date',
+        'banner_id',
+      ],
       include: [
         {
-          model: Meetup,
-          as: 'meetup',
-          where: {
-            date: {
-              [Op.gte]: new Date(),
-            },
-          },
+          model: Subscription,
           required: true,
-          attributes: [
-            'id',
-            'title',
-            'description',
-            'localization',
-            'date',
-            'banner_id',
-          ],
-          include: [
-            {
-              model: File,
-              as: 'banner',
-              attributes: ['id', 'url'],
-            },
-          ],
+          where: {
+            user_id: req.user_id,
+          },
+          attributes: ['id'],
+        },
+        {
+          model: File,
+          as: 'banner',
+          attributes: ['id', 'url', 'path'],
         },
       ],
-      order: [['meetup', 'date']],
+      order: ['date'],
     });
 
     return res.json(subscriptions);
