@@ -26,6 +26,11 @@ class MeetupController {
           as: 'organizer',
           attributes: ['id', 'name', 'email'],
         },
+        {
+          model: File,
+          as: 'banner',
+          attributes: ['id', 'path', 'url'],
+        },
       ],
       limit: 10,
       offset: 10 * (page - 1),
