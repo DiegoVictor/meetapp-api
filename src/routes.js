@@ -11,6 +11,10 @@ import Auth from './app/middlewares/auth';
 
 const Route = new Router();
 
+Route.get('/', (req, res) => {
+  res.send('Running');
+});
+
 Route.post('/sessions', SessionController.store);
 Route.post('/users', UserController.store);
 
