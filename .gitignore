@@ -1,4 +1,5 @@
 /node_modules
 nodemon.json
 tmp/uploads/*
+dist
 .env
