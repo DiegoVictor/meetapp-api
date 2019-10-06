@@ -52,14 +52,6 @@ class SubscriptionCntroller {
   }
 
   async store(req, res) {
-    const schema = Yup.object().shape({
-      meetup_id: Yup.number().required(),
-    });
-
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails' });
-    }
-
     const { meetup_id } = req.body;
     const meetup = await Meetup.findOne({
       where: { id: meetup_id, user_id: { [Op.ne]: req.user_id } },
