@@ -1,14 +1,18 @@
 import 'dotenv/config';
 import Express from 'express';
 import path from 'path';
-import cors from 'cors';
-import routes from './routes';
+import * as Sentry from '@sentry/node';
 
 import './database';
 
 class App {
   constructor() {
     this.server = Express();
+
+    if (process.env.LOG) {
+      Sentry.init({ dsn: process.env.SENTRY_DSN });
+    }
+
     this.middlewares();
     this.routes();
   }
@@ -24,6 +28,9 @@ class App {
 
   routes() {
     this.server.use(routes);
+    if (process.env.LOG) {
+      this.server.use(Sentry.Handlers.errorHandler());
+    }
   }
 }
 
