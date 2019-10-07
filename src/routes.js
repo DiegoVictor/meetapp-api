@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import Brute from 'express-brute';
+import BruteRedis from 'express-brute-redis';
 import Multer from 'multer';
 
 import FileController from './app/controllers/FileController';
@@ -19,8 +21,19 @@ import Auth from './app/middlewares/auth';
 import storage from './config/storage';
 
 const Route = new Router();
+const BruteForce = new Brute(
+  new BruteRedis({
+    host: process.env.REDIS_HOST,
+    port: process.env.REDIS_PORT,
+  })
+);
 
-Route.post('/sessions', SessionStore, SessionController.store);
+Route.post(
+  '/sessions',
+  BruteForce.prevent,
+  SessionStore,
+  SessionController.store
+);
 Route.post('/users', UserStore, UserController.store);
 
 Route.use(Auth);
