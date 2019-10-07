@@ -16,8 +16,8 @@ import SessionStore from './app/validators/SessionStore';
 import SubscriptionStore from './app/validators/SubscriptionStore';
 import UserStore from './app/validators/UserStore';
 import UserUpdate from './app/validators/UserUpdate';
-import Auth from './app/middlewares/auth';
 
+import Auth from './app/middlewares/auth';
 import storage from './config/storage';
 
 const Route = new Router();

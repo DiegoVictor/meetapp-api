@@ -1,6 +1,6 @@
-import Multer from 'multer';
-import Crypto from 'crypto';
 import { extname, resolve } from 'path';
+import Crypto from 'crypto';
+import Multer from 'multer';
 
 export default {
   storage: Multer.diskStorage({

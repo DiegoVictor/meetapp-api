@@ -1,5 +1,5 @@
-import Meetup from '../models/Meetup';
 import File from '../models/File';
+import Meetup from '../models/Meetup';
 
 class ScheduledController {
   async index(req, res) {
@@ -11,14 +11,16 @@ class ScheduledController {
 
   async show(req, res) {
     const meetup = await Meetup.findOne({
-      where: { user_id: req.user_id, id: req.params.id },
       include: [
         {
-          model: File,
           as: 'banner',
-          attributes: ['id', 'url', 'path'],
+          model: File,
         },
       ],
+      where: {
+        id: req.params.id,
+        user_id: req.user_id,
+      },
     });
     return res.json(meetup);
   }

@@ -4,10 +4,10 @@ class Meetup extends Model {
   static init(sequelize) {
     super.init(
       {
-        title: Sequelize.STRING,
+        date: Sequelize.DATE,
         description: Sequelize.STRING,
         localization: Sequelize.STRING,
-        date: Sequelize.DATE,
+        title: Sequelize.STRING,
       },
       {
         sequelize,
@@ -18,11 +18,11 @@ class Meetup extends Model {
   }
 
   static associate(models) {
-    this.belongsTo(models.File, { foreignKey: 'banner_id', as: 'banner' });
-    this.belongsTo(models.User, { foreignKey: 'user_id', as: 'organizer' });
+    this.belongsTo(models.File, { as: 'banner', foreignKey: 'banner_id' });
+    this.belongsTo(models.User, { as: 'organizer', foreignKey: 'user_id' });
     this.hasMany(models.Subscription, {
-      foreignKey: 'meetup_id',
       as: 'subscription',
+      foreignKey: 'meetup_id',
     });
   }
 }

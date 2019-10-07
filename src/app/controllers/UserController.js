@@ -6,10 +6,8 @@ class UserController {
       where: { email: req.body.email },
     });
 
-    if (user_exists) {
-      return res.status(400).json({
-        error: 'User already exists',
-      });
+    const { id, email, name } = await User.create(req.body);
+    return res.json({ id, email, name });
     }
 
     const { id, name, email } = await User.create(req.body);
@@ -37,7 +35,7 @@ class UserController {
     }
 
     const { id, name } = await user.update(req.body);
-    return res.json({ id, name, email });
+    return res.json({ id, email, name });
   }
 }
 
