@@ -1,18 +1,14 @@
+import { badRequest } from '@hapi/boom';
+
 import User from '../models/User';
+import EmailAlreadyUsed from '../services/EmailAlreadyUsed';
 
 class UserController {
   async store(req, res) {
-    const user_exists = await User.findOne({
-      where: { email: req.body.email },
-    });
+    await EmailAlreadyUsed.run({ email: req.body.email });
 
     const { id, email, name } = await User.create(req.body);
     return res.json({ id, email, name });
-    }
-
-    const { id, name, email } = await User.create(req.body);
-
-    return res.json({ id, name, email });
   }
 
   async update(req, res) {
@@ -20,12 +16,7 @@ class UserController {
     const user = await User.findByPk(req.user_id);
 
     if (email !== user.email) {
-      const user_exists = await User.findOne({ where: { email } });
-      if (user_exists) {
-        return res.status(400).json({
-          error: 'User already exists',
-        });
-      }
+      await EmailAlreadyUsed.run({ email });
     }
 
     if (old_password && !(await user.checkPassword(old_password))) {
