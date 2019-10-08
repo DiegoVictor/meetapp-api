@@ -10,6 +10,7 @@ import * as Sentry from '@sentry/node';
 import Youch from 'youch';
 
 import './database';
+import routes from './routes';
 
 class App {
   constructor() {
