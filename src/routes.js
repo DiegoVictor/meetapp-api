@@ -30,7 +30,18 @@ const BruteForce = new Brute(
 
 Route.post(
   '/sessions',
-  BruteForce.prevent,
+  (env => {
+    switch (env) {
+      case 'test':
+      case 'development':
+        return (req, res, next) => {
+          next();
+        };
+
+      default:
+        return BruteForce.prevent;
+    }
+  })(process.env.NODE_ENV),
   SessionStore,
   SessionController.store
 );
