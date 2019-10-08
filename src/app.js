@@ -7,6 +7,7 @@ import LimitRedis from 'rate-limit-redis';
 import path from 'path';
 import redis from 'redis';
 import * as Sentry from '@sentry/node';
+import Youch from 'youch';
 
 import './database';
 
@@ -20,6 +21,7 @@ class App {
 
     this.middlewares();
     this.routes();
+    this.exceptionHandler();
   }
 
   middlewares() {
@@ -56,6 +58,22 @@ class App {
     if (process.env.LOG) {
       this.server.use(Sentry.Handlers.errorHandler());
     }
+  }
+
+  exceptionHandler() {
+    this.server.use(async (err, req, res, next) => {
+      if (process.env.NODE_ENV === 'development') {
+        const errors = await new Youch(err, req).toJSON();
+        return res.status(500).json(errors);
+      }
+
+      if (process.env.LOG) {
+        Sentry.captureException(err);
+      }
+
+      const { payload } = err.output;
+      return res.status(payload.statusCode).json(payload);
+    });
   }
 }
 
