@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { badRequest } from '@hapi/boom';
 
 export default async (req, res, next) => {
   try {
@@ -16,9 +17,6 @@ export default async (req, res, next) => {
 
     return next();
   } catch (err) {
-    return res.status(400).json({
-      error: 'Validation fails',
-      messages: err.inner,
-    });
+    throw badRequest('Validation fails', err.inner);
   }
 };

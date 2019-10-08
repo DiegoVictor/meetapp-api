@@ -1,3 +1,4 @@
+import { unauthorized } from '@hapi/boom';
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 
@@ -7,7 +8,7 @@ export default async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return res.status(401).json({ error: 'Token not provided' });
+    throw unauthorized('Token not provided');
   }
 
   const [, token] = authorization.split(' ');
@@ -16,7 +17,7 @@ export default async (req, res, next) => {
     const decoded = await promisify(jwt.verify)(token, SECRET);
     req.user_id = decoded.id;
   } catch (err) {
-    return res.status(401).json({ error: 'Token invalid' });
+    throw unauthorized('Token invalid');
   }
 
   return next();

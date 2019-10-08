@@ -121,9 +121,7 @@ class SubscriptionCntroller {
     });
 
     if (!subscription) {
-      return res.status(400).json({
-        error: 'Meetup or user does not exists',
-      });
+      throw badRequest('Meetup or user does not exists');
     }
 
     subscription.destroy();
