@@ -21,12 +21,6 @@ import Auth from './app/middlewares/auth';
 import storage from './config/storage';
 
 const Route = new Router();
-const BruteForce = new Brute(
-  new BruteRedis({
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT,
-  })
-);
 
 Route.post(
   '/sessions',
@@ -38,8 +32,15 @@ Route.post(
           next();
         };
 
-      default:
+      default: {
+        const BruteForce = new Brute(
+          new BruteRedis({
+            host: process.env.REDIS_HOST,
+            port: process.env.REDIS_PORT,
+          })
+        );
         return BruteForce.prevent;
+      }
     }
   })(process.env.NODE_ENV),
   SessionStore,
