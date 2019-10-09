@@ -1,16 +1,17 @@
-import 'dotenv/config';
+require('../bootstrap');
 
-export default {
+module.exports = {
   database: process.env.DB_NAME,
   define: {
     timestamps: true,
     underscored: true,
     underscoredAll: true,
   },
-  dialect: 'postgres',
+  dialect: process.env.DB_DIALECT || 'postgres',
   host: process.env.DB_HOST,
+  logging: parseInt(process.env.SEQUELIZE_LOG, 10),
   password: process.env.DB_PASS,
   port: process.env.DB_PORT,
+  storage: './__tests__/database.sqlite',
   username: process.env.DB_USER,
-  logging: parseInt(process.env.SEQUELIZE_LOG, 10),
 };
