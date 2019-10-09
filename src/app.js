@@ -73,6 +73,12 @@ class App {
       }
 
       const { payload } = err.output;
+
+      if (typeof err.data === 'object') {
+        payload.messages = err.data;
+        delete payload.message;
+      }
+
       return res.status(payload.statusCode).json(payload);
     });
   }
