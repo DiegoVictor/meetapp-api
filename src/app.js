@@ -1,3 +1,4 @@
+import './bootstrap';
 import 'express-async-errors';
 import cors from 'cors';
 import Express from 'express';
@@ -45,20 +46,20 @@ class App {
 
       case 'production':
       default:
-      this.server.use(
-        new Limit({
-          max: 100,
-          store: new LimitRedis({
-            client: redis.createClient({
-              host: process.env.REDIS_HOST,
-              port: process.env.REDIS_PORT,
+        this.server.use(
+          new Limit({
+            max: 100,
+            store: new LimitRedis({
+              client: redis.createClient({
+                host: process.env.REDIS_HOST,
+                port: process.env.REDIS_PORT,
+              }),
             }),
-          }),
-          windowMs: 1000 * 60 * 15, // 15m
-        })
-      );
+            windowMs: 1000 * 60 * 15, // 15m
+          })
+        );
         break;
-  }
+    }
   }
 
   routes() {
