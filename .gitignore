@@ -2,3 +2,6 @@
 tmp/uploads/*
 dist
 .env
+.env.test
+__tests__/coverage
+__tests__/database.sqlite
