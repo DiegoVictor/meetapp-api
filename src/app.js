@@ -38,7 +38,13 @@ class App {
       Express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
     );
 
-    if (process.env.NODE_ENV !== 'development') {
+    switch (process.env.NODE_ENV) {
+      case 'development':
+      case 'test':
+        break;
+
+      case 'production':
+      default:
       this.server.use(
         new Limit({
           max: 100,
@@ -51,6 +57,7 @@ class App {
           windowMs: 1000 * 60 * 15, // 15m
         })
       );
+        break;
   }
   }
 
