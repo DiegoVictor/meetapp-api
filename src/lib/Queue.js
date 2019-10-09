@@ -14,12 +14,19 @@ class Queue {
 
   init() {
     jobs.forEach(({ key, handle }) => {
-      this.queues[key] = {
-        bee: new Bee(key, {
-          redis,
-        }),
-        handle,
-      };
+      switch (process.env.NODE_ENV) {
+        case 'test':
+          break;
+
+        default:
+          this.queues[key] = {
+            bee: new Bee(key, {
+              redis,
+            }),
+            handle,
+          };
+          break;
+      }
     });
   }
 
