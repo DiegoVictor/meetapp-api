@@ -27,8 +27,14 @@ describe('Session', () => {
         password,
       });
 
-    expect(response.body).toHaveProperty('token');
-    expect(response.body).toHaveProperty('user');
+    expect(response.body).toMatchObject({
+      token: expect.any(String),
+      user: expect.objectContaining({
+        id: expect.any(Number),
+        email: user.email,
+        name: user.name,
+      }),
+    });
   });
 
   it('should return a valid JWT token', async () => {
@@ -42,7 +48,11 @@ describe('Session', () => {
     const { token } = response.body;
     const decoded = await promisify(jwt.verify)(token, process.env.APP_SECRET);
 
-    expect(decoded.id).toBe(user.id);
+    expect(decoded).toMatchObject({
+      id: user.id,
+      iat: expect.any(Number),
+      exp: expect.any(Number),
+    });
   });
 
   it('should fail in validation', async () => {
@@ -50,9 +60,8 @@ describe('Session', () => {
       .post('/sessions')
       .send({});
 
-    console.log(response.body);
-
     expect(response.status).toBe(400);
+    expect(response.body.messages).toBeDefined();
   });
 
   it('should return that the user does not exists', async () => {
@@ -64,6 +73,7 @@ describe('Session', () => {
       });
 
     expect(response.status).toBe(401);
+    expect(response.body.message).toBeDefined();
   });
 
   it('should return password does not match', async () => {
@@ -75,5 +85,6 @@ describe('Session', () => {
       });
 
     expect(response.status).toBe(400);
+    expect(response.body.message).toBeDefined();
   });
 });
