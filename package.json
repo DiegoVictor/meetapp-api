@@ -8,7 +8,7 @@
     "queue": "nodemon src/queue.js",
     "build": "sucrase ./src -d ./dist --transforms imports",
     "start": "node dist/server.js",
-    "pretest": "set NODE_ENV=test&&sequelize db:migrate:undo:all&&sequelize db:migrate",
+    "pretest": "set NODE_ENV=test&&sequelize db:migrate",
     "test": "set NODE_ENV=test&&jest",
     "posttest": "set NODE_ENV=test&&sequelize db:migrate:undo:all"
   },
