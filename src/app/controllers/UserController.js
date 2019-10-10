@@ -15,7 +15,7 @@ class UserController {
     const { email, old_password } = req.body;
     const user = await User.findByPk(req.user_id);
 
-    if (email !== user.email) {
+    if (email && email !== user.email) {
       await EmailAlreadyUsed.run({ email });
     }
 
