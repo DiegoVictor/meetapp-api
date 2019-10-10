@@ -81,8 +81,7 @@ class App {
       }
 
       const { payload } = err.output;
-
-      if (typeof err.data === 'object') {
+      if (err.data) {
         payload.messages = err.data;
         delete payload.message;
       }
