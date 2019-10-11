@@ -10,7 +10,7 @@ class MeetupController {
   async index(req, res) {
     const { date, page } = req.query;
     const meetups = await MeetupAvailable.run({
-      date: parseISO(date),
+      date: date ? parseISO(date) : null,
       page,
       user_id: req.user_id,
     });
