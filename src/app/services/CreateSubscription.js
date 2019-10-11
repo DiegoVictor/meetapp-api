@@ -47,7 +47,7 @@ class CreateSubscription {
     });
 
     if (subscriptions.length > 0) {
-      throw badRequest(
+      throw unauthorized(
         'You are already subscribed to this meetup ' +
           'or there is another meetup in the same time'
       );
