@@ -1,15 +1,17 @@
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
+import { isBefore, parseISO } from 'date-fns';
 import app from '../../src/app';
 import User from '../../src/app/models/User';
 import { SECRET, EXPIRATION_TIME } from '../../src/config/auth';
 import Meetup from '../../src/app/models/Meetup';
+import Subscription from '../../src/app/models/Subscription';
 
 describe('Scheduled', () => {
   let token;
   let meetup_id;
   let past_meetup_id;
-  let cloned_meetup_id;
+  let other_meetup_id;
   let user_id;
 
   beforeAll(async () => {
@@ -42,14 +44,14 @@ describe('Scheduled', () => {
     });
     meetup_id = meetup.id;
 
-    const meetup_clone = await Meetup.create({
+    const other_meetup = await Meetup.create({
       date,
       description: 'Lorem Ipsum',
       localization: 'Dolor sit amet',
       title: `Meetup Test #15`,
       user_id: other_user.id,
     });
-    cloned_meetup_id = meetup_clone.id;
+    other_meetup_id = other_meetup.id;
 
     date.setDate(date.getDate() - 2);
     const past_meetup = await Meetup.create({
@@ -60,6 +62,18 @@ describe('Scheduled', () => {
       user_id: other_user.id,
     });
     past_meetup_id = past_meetup.id;
+
+    const { id: another_meetup_id } = await Meetup.create({
+      date,
+      description: 'Lorem Ipsum',
+      localization: 'Dolor sit amet',
+      title: `Meetup Test #15`,
+      user_id: other_user.id,
+    });
+    await Subscription.create({
+      meetup_id: another_meetup_id,
+      user_id,
+    });
   });
 
   it('should be able to subscribe to meetup', async () => {
@@ -123,7 +137,7 @@ describe('Scheduled', () => {
       .post('/subscriptions')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        meetup_id: cloned_meetup_id,
+        meetup_id: other_meetup_id,
       });
 
     expect(response.status).toBe(401);
@@ -131,5 +145,17 @@ describe('Scheduled', () => {
       'You are already subscribed to this meetup ' +
         'or there is another meetup in the same time'
     );
+  });
+
+  it("should be able to retrieve user's subscriptions that not occur yet", async () => {
+    const response = await request(app)
+      .get('/subscriptions')
+      .set('Authorization', `Bearer ${token}`)
+      .send({});
+
+    expect(Array.isArray(response.body)).toBe(true);
+    response.body.forEach(subscription => {
+      expect(isBefore(parseISO(subscription.date), new Date())).toBe(false);
+    });
   });
 });
