@@ -40,7 +40,6 @@ describe('User', () => {
       .post('/users')
       .send(user);
 
-    expect(response.status).toBe(200);
     expect(response.body).toMatchObject({
       id: expect.any(Number),
       email: user.email,
@@ -68,7 +67,6 @@ describe('User', () => {
         confirm_password: new_password,
       });
 
-    expect(response.status).toBe(200);
     expect(response.body).toMatchObject({
       id: expect.any(Number),
       name: another_user.name,
