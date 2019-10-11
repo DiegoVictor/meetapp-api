@@ -22,7 +22,12 @@ class EditMeetup {
       throw badRequest('Past dates are not permited');
     }
 
+    if (isBefore(meetup.date, new Date())) {
+      throw unauthorized("You can't edit past meetups");
+    }
+
     await meetup.update({ ...data, user_id });
+    return meetup;
   }
 }
 
