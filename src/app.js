@@ -82,8 +82,7 @@ class App {
 
       const { payload } = err.output;
       if (err.data) {
-        payload.messages = err.data;
-        delete payload.message;
+        payload.details = err.data;
       }
 
       return res.status(payload.statusCode).json(payload);
