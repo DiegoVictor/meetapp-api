@@ -1,82 +1,19 @@
+import faker from 'faker';
 import request from 'supertest';
-import jwt from 'jsonwebtoken';
+
 import app from '../../src/app';
-import User from '../../src/app/models/User';
+import factory from '../utils/factories';
+import jwtoken from '../utils/jwtoken';
 import File from '../../src/app/models/File';
-import { SECRET, EXPIRATION_TIME } from '../../src/config/auth';
-import Meetup from '../../src/app/models/Meetup';
+import Meetup from '../../src/app/models/Subscription';
 
 describe('Meetup', () => {
-  const date = new Date();
-  const meetup = {
-    description: 'Lorem Ipsum',
-    localization: 'Dolor sit amet',
-    title: `Meetup Test #12`,
-  };
-  let token;
-  let banner_id;
-  let user_id;
-  let meetup_id;
-  let past_meetup_id;
+  it('should be able to get a page of meetups (10 itens)', async () => {
+    const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
+    const token = jwtoken(id);
 
-  date.setHours(12);
+    await factory.createMany('Meetup', 10, { user_id });
 
-  beforeAll(async () => {
-    const user = await User.create({
-      name: 'user',
-      email: 'user6@test.com',
-      password: '123456',
-    });
-    user_id = user.id;
-
-    token = jwt.sign({ id: user.id }, SECRET, {
-      expiresIn: EXPIRATION_TIME,
-    });
-
-    for (let i = 0; i < 10; i += 1) {
-      await Meetup.create({
-        date,
-        description: 'Lorem Ipsum',
-        localization: 'Dolor sit amet',
-        title: `Meetup Test #${i + 1}`,
-      });
-    }
-
-    date.setDate(date.getDate() - 2);
-    const past_meetup = await Meetup.create({
-      date,
-      description: 'Lorem Ipsum',
-      localization: 'Dolor sit amet',
-      title: `Meetup Test #13`,
-      user_id,
-    });
-    past_meetup_id = past_meetup.id;
-
-    date.setDate(date.getDate() + 3);
-    await Meetup.create({
-      date,
-      description: 'Lorem Ipsum',
-      localization: 'Dolor sit amet',
-      title: 'Meetup Test #12',
-    });
-
-    const future_meetup = await Meetup.create({
-      date,
-      description: 'Lorem Ipsum',
-      localization: 'Dolor sit amet',
-      title: 'Meetup Test #14',
-    });
-
-    meetup_id = future_meetup.id;
-
-    const file = await File.create({
-      name: '333580.jpg',
-      path: '7aa806a99dff90c932456ea0555d09e1.jpg',
-    });
-    banner_id = file.id;
-  });
-
-  it('should return the first page of meetups with 10 itens', async () => {
     const response = await request(app)
       .get('/meetups')
       .set('Authorization', `Bearer ${token}`)
@@ -84,135 +21,303 @@ describe('Meetup', () => {
 
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBe(10);
+    expect(response.body).toContainEqual(
+      expect.objectContaining({
+        id: expect.any(Number),
+      })
+    );
   });
 
-  it("should return the meetups with it's organizers", async () => {
+  it("should get meetups with it's organizers", async () => {
+    const [{ id }, { id: user_id, name }] = await factory.createMany('User', 2);
+    const token = jwtoken(id);
+
+    await factory.createMany('Meetup', 5, { user_id });
+
     const response = await request(app)
       .get('/meetups')
       .set('Authorization', `Bearer ${token}`)
       .send();
 
     expect(Array.isArray(response.body)).toBe(true);
-    expect(response.body[0]).toHaveProperty('organizer');
+    expect(response.body).toContainEqual(
+      expect.objectContaining({
+        organizer: expect.objectContaining({ id: expect.any(Number), name }),
+      })
+    );
   });
 
-  it('should return a meetups list with date to tomorrow', async () => {
+  it('should get meetups with date to tomorrow', async () => {
+    const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
+    const token = jwtoken(id);
+    const date = '2019-10-13';
+
+    await factory.createMany('Meetup', 10, {
+      user_id,
+      date: new Date(`${date}T12:00:00`),
+    });
+
     const response = await request(app)
-      .get(`/meetups?date=${date.toISOString().slice(0, 10)}`)
+      .get(`/meetups?date=${date}`)
       .set('Authorization', `Bearer ${token}`)
       .send();
 
     expect(Array.isArray(response.body)).toBe(true);
-    expect(response.body.length).toBeGreaterThan(0);
+    expect(response.body.length).toBe(10);
+
+    const regexp = new RegExp(`^${date}T`);
+    expect(response.body).toContainEqual(
+      expect.objectContaining({
+        date: expect.stringMatching(regexp),
+      })
+    );
   });
 
-  it('should return the second page of meetups', async () => {
+  it('should get the second page of meetups', async () => {
+    const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
+    const token = jwtoken(id);
+
+    await factory.createMany('Meetup', 20, { user_id });
+
     const response = await request(app)
       .get(`/meetups?page=2`)
       .set('Authorization', `Bearer ${token}`)
       .send();
 
     expect(Array.isArray(response.body)).toBe(true);
-    expect(response.body.length).toBeGreaterThan(0);
+    expect(response.body.length).toBe(10);
+    expect(response.body).toContainEqual(
+      expect.objectContaining({
+        id: expect.any(Number),
+      })
+    );
   });
 
   it('should be able to create a meetup', async () => {
+    const { id } = await factory.create('User');
+    const { id: banner_id } = await factory.create('File');
+    const meetup = await factory.attrs('Meetup', { user_id: id, banner_id });
+    const token = jwtoken(id);
+
     const response = await request(app)
       .post(`/meetups`)
       .set('Authorization', `Bearer ${token}`)
-      .send({
-        ...meetup,
-        date,
-        banner_id,
-        user_id,
-      });
+      .send(meetup);
 
     expect(response.body).toMatchObject({
+      ...meetup,
       id: expect.any(Number),
-      user_id,
-      banner_id,
-      title: meetup.title,
-      description: meetup.description,
-      localization: meetup.localization,
-      date: date.toISOString(),
+      date: meetup.date.toISOString(),
     });
   });
 
-  it('should fail creation in validation', async () => {
+  it('should fail because the provided banner not exists', async () => {
+    const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
+    const { id: last_banner_id } = await File.findOne({
+      order: [['createdAt', 'DESC']],
+    });
+    const meetup = await factory.attrs('Meetup', {
+      banner_id: last_banner_id + 1,
+      user_id,
+    });
+    const token = jwtoken(id);
+    const response = await request(app)
+      .post(`/meetups`)
+      .set('Authorization', `Bearer ${token}`)
+      .send(meetup);
+
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe('The provided banner does not exists');
+  });
+
+  it('should fail in validation because the fields are missing', async () => {
+    const { id } = await factory.create('User');
+    const token = jwtoken(id);
     const response = await request(app)
       .post(`/meetups`)
       .set('Authorization', `Bearer ${token}`)
       .send({});
 
     expect(response.status).toBe(400);
-    expect(response.body.messages).toBeDefined();
+    expect(response.body.message).toBe('Validation fails');
+    expect(response.body.details).toBeDefined();
   });
 
   it('should not be able to create a meetup with past date', async () => {
-    const past_date = new Date();
-    past_date.setDate(past_date.getDate() - 1);
+    const { id } = await factory.create('User');
+    const { id: banner_id } = await factory.create('File');
+    const meetup = await factory.attrs('Meetup', {
+      banner_id,
+      date: faker.date.past(),
+    });
+    const token = jwtoken(id);
+
     const response = await request(app)
       .post(`/meetups`)
       .set('Authorization', `Bearer ${token}`)
-      .send({
-        ...meetup,
-        date: past_date,
-        banner_id,
-        user_id,
-      });
+      .send(meetup);
 
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('Past dates are not permited');
   });
 
   it('should be able to edit a meetup', async () => {
-    const new_date = new Date();
-    new_date.setDate(new_date.getDate() + 1);
+    const { id } = await factory.create('User');
+    const { id: banner_id } = await factory.create('File');
+    const { id: meetup_id, date } = await factory.create('Meetup', {
+      banner_id,
+    });
+    const token = jwtoken(id);
+    const data = {
+      description: faker.lorem.paragraphs(2),
+      localization: faker.address.streetAddress(),
+      title: faker.name.title(),
+    };
+    const response = await request(app)
+      .put(`/meetups/${meetup_id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send(data);
+
+    expect(response.body).toMatchObject({
+      id: meetup_id,
+      user_id: id,
+      banner_id,
+      date: date.toISOString(),
+      ...data,
+    });
+  });
+
+  it('should fail because the provided banner not exists', async () => {
+    const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
+    const { id: banner_id } = await factory.create('File');
+    const { id: meetup_id } = await factory.create('Meetup', {
+      banner_id,
+      user_id,
+    });
+    const { id: last_banner_id } = await File.findOne({
+      order: [['createdAt', 'DESC']],
+    });
+    const token = jwtoken(id);
+    const response = await request(app)
+      .put(`/meetups/${meetup_id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        banner_id: last_banner_id + 1,
+      });
+
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe('The provided banner does not exists');
+  });
+
+  it('should fail because was provided a past date', async () => {
+    const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
+    const { id: banner_id } = await factory.create('File');
+    const { id: meetup_id } = await factory.create('Meetup', {
+      banner_id,
+      user_id,
+    });
+
+    const token = jwtoken(id);
+    const response = await request(app)
+      .put(`/meetups/${meetup_id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        date: faker.date.past(),
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Past dates are not permited');
+  });
+
+  it('should fail in validation, fields with wrong data', async () => {
+    const { id } = await factory.create('User');
+    const { id: banner_id } = await factory.create('File');
+    const { id: meetup_id } = await factory.create('Meetup', {
+      banner_id,
+    });
+    const token = jwtoken(id);
 
     const response = await request(app)
       .put(`/meetups/${meetup_id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
-        date: new_date,
-        description: 'Ipsum Lorem',
-        localization: 'Amet Sit Dolor',
-        title: 'Meetup Test #14',
-        banner_id,
+        banner_id: 0,
+        date: faker.date.past(),
+        description: faker.random.number(),
+        localization: faker.random.number(),
+        title: faker.name.title(3),
       });
 
-    expect(response.body).toMatchObject({
-      id: meetup_id,
-      user_id,
-      banner_id,
-      title: 'Meetup Test #14',
-      description: 'Ipsum Lorem',
-      localization: 'Amet Sit Dolor',
-      date: new_date.toISOString(),
-    });
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Validation fails');
+    expect(response.body.details).toBeDefined();
   });
 
   it('should not be able to edit a past meetup', async () => {
+    const { id } = await factory.create('User');
+    const { id: banner_id } = await factory.create('File');
+    const { id: meetup_id } = await factory.create('Meetup', {
+      banner_id,
+      date: faker.date.past(),
+    });
+    const token = jwtoken(id);
+
     const response = await request(app)
-      .put(`/meetups/${past_meetup_id}`)
+      .put(`/meetups/${meetup_id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
-        description: 'Ipsum Lorem',
-        localization: 'Amet Sit Dolor',
-        title: 'Meetup Test #14',
-        banner_id,
+        title: faker.name.title(),
       });
 
     expect(response.status).toBe(401);
     expect(response.body.message).toBe("You can't edit past meetups");
   });
 
-  it('should not be able to delete a past meetup', async () => {
+  it('should be able to delete a meetup', async () => {
+    const { id } = await factory.create('User');
+    const { id: meetup_id } = await factory.create('Meetup');
+    const token = jwtoken(id);
+
     const response = await request(app)
-      .delete(`/meetups/${past_meetup_id}`)
+      .delete(`/meetups/${meetup_id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send();
+
+    expect(response.body).toMatchObject({ id: meetup_id });
+  });
+
+  it('should not be able to delete a past meetup', async () => {
+    const { id } = await factory.create('User');
+    const { id: banner_id } = await factory.create('File');
+    const { id: meetup_id } = await factory.create('Meetup', {
+      banner_id,
+      date: faker.date.past(),
+    });
+    const token = jwtoken(id);
+
+    const response = await request(app)
+      .delete(`/meetups/${meetup_id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send();
+
+    expect(response.status).toBe(401);
+    expect(response.body.message).toBe("You can't remove past meetups");
+  });
+
+  it('should not be able to delete meetup that not exists', async () => {
+    const { id } = await factory.create('User');
+    const token = jwtoken(id);
+
+    const { id: last_meetup_id } = Meetup.findOne({
+      order: [['createdAt', 'DESC']],
+    });
+
+    const response = await request(app)
+      .delete(`/meetups/${last_meetup_id + 1}`)
       .set('Authorization', `Bearer ${token}`)
       .send();
 
     expect(response.status).toBe(400);
-    expect(response.body.message).toBe("You can't remove past meetups");
+    expect(response.body.message).toBe('Meetup does not exists');
   });
 });

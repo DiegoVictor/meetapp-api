@@ -1,41 +1,14 @@
-import request from 'supertest';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import faker from 'faker';
+import request from 'supertest';
+
 import app from '../../src/app';
-import User from '../../src/app/models/User';
-import { SECRET, EXPIRATION_TIME } from '../../src/config/auth';
+import factory from '../utils/factories';
+import jwtoken from '../utils/jwtoken';
 
 describe('User', () => {
-  const password = '123456';
-  const new_password = '654321';
-  const user = {
-    name: 'user',
-    email: 'user2@test.com',
-    password,
-  };
-  let another_user;
-  let other_user;
-  let token;
-
-  beforeAll(async () => {
-    other_user = await User.create({
-      name: 'user',
-      email: 'user4@test.com',
-      password,
-    });
-
-    another_user = await User.create({
-      name: 'user',
-      email: 'user3@test.com',
-      password,
-    });
-
-    token = jwt.sign({ id: another_user.id }, SECRET, {
-      expiresIn: EXPIRATION_TIME,
-    });
-  });
-
-  it('should be able to register a user with name, email and password', async () => {
+  it('should be able to register a user', async () => {
+    const user = await factory.attrs('User');
     const response = await request(app)
       .post('/users')
       .send(user);
@@ -48,16 +21,17 @@ describe('User', () => {
   });
 
   it('encrypt user password when new user is created', async () => {
-    const response = await User.create({
-      ...user,
-      email: 'user5@test.com',
-    });
+    const password = '123456';
+    const { password_hash } = await factory.create('User', { password });
 
-    const compare_hash = await bcrypt.compare(password, response.password_hash);
+    const compare_hash = await bcrypt.compare(password, password_hash);
     expect(compare_hash).toBe(true);
   });
 
-  it('should be able to update a user password', async () => {
+  it("should be able to update a user's password", async () => {
+    const { id, name, password } = await factory.create('User');
+    const { password: new_password } = await factory.attrs('User');
+    const token = jwtoken(id);
     const response = await request(app)
       .put('/users')
       .set('Authorization', `Bearer ${token}`)
@@ -67,44 +41,63 @@ describe('User', () => {
         confirm_password: new_password,
       });
 
-    expect(response.body).toMatchObject({
-      id: expect.any(Number),
-      name: another_user.name,
-    });
+    expect(response.body).toMatchObject({ id, name });
   });
 
-  it('should return that the old password typed do not match the current', async () => {
+  it('should fail because the provided old password is wrong', async () => {
+    const { id } = await factory.create('User');
+    const { password: new_password } = await factory.attrs('User');
+    const token = jwtoken(id);
     const response = await request(app)
       .put('/users')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        old_password: '235416',
+        old_password: new_password,
         password: new_password,
         confirm_password: new_password,
       });
 
     expect(response.status).toBe(400);
-    expect(response.body.message).toBeDefined();
+    expect(response.body.message).toBe('Password does not match');
   });
 
-  it('should return that the new email is already taken', async () => {
+  it('should fail because the provided email is already taken', async () => {
+    const [{ id }, { email }] = await factory.createMany('User', 2);
+    const token = jwtoken(id);
     const response = await request(app)
       .put('/users')
       .set('Authorization', `Bearer ${token}`)
-      .send({
-        email: other_user.email,
-      });
+      .send({ email });
 
     expect(response.status).toBe(400);
-    expect(response.body.message).toBeDefined();
+    expect(response.body.message).toBe('Email already in use');
   });
 
-  it('should fail in validation', async () => {
+  it('should fail in validation, missing fields', async () => {
     const response = await request(app)
       .post('/users')
       .send({});
 
     expect(response.status).toBe(400);
-    expect(response.body.messages).toBeDefined();
+    expect(response.body.message).toBe('Validation fails');
+    expect(response.body.details).toBeDefined();
+  });
+
+  it('should fail in validation, wrong data types and sizes', async () => {
+    const { id } = await factory.create('User');
+    const token = jwtoken(id);
+    const response = await request(app)
+      .put('/users')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        confirm_password: faker.random.number(),
+        email: faker.random.word(),
+        name: faker.random.number(),
+        password: faker.internet.password(3),
+      });
+
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('Validation fails');
+    expect(response.body.details).toBeDefined();
   });
 });

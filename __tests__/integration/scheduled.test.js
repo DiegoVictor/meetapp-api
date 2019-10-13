@@ -1,43 +1,58 @@
 import request from 'supertest';
-import jwt from 'jsonwebtoken';
+
 import app from '../../src/app';
-import User from '../../src/app/models/User';
-import { SECRET, EXPIRATION_TIME } from '../../src/config/auth';
-import Meetup from '../../src/app/models/Meetup';
+import factory from '../utils/factories';
+import jwtoken from '../utils/jwtoken';
 
 describe('Scheduled', () => {
-  let token;
-  let user_id;
-
-  beforeAll(async () => {
-    const user = await User.create({
-      name: 'user',
-      email: 'user7@test.com',
-      password: '123456',
-    });
-    user_id = user.id;
-
-    token = jwt.sign({ id: user.id }, SECRET, {
-      expiresIn: EXPIRATION_TIME,
-    });
-
-    const date = new Date();
-    await Meetup.create({
-      date,
-      description: 'Lorem Ipsum',
-      localization: 'Dolor sit amet',
-      title: `Meetup Test #13`,
-      user_id,
-    });
-  });
-
   it("should return user's scheduled meetups", async () => {
+    const { id } = await factory.create('User');
+    const token = jwtoken(id);
+
+    await factory.createMany('Meetup', 5, {
+      user_id: id,
+    });
+
     const response = await request(app)
       .get('/scheduled')
       .set('Authorization', `Bearer ${token}`)
       .send();
 
     expect(Array.isArray(response.body)).toBe(true);
-    expect(response.body[0].user_id).toBe(user_id);
+    expect(response.body).toContainEqual(
+      expect.objectContaining({ user_id: id })
+    );
+  });
+
+  it("should return one user's scheduled meetup", async () => {
+    const { id } = await factory.create('User');
+    const { id: banner_id } = await factory.create('File');
+    const token = jwtoken(id);
+
+    const {
+      id: meetup_id,
+      date,
+      localization,
+      description,
+      title,
+    } = await factory.create('Meetup', {
+      user_id: id,
+      banner_id,
+    });
+
+    const response = await request(app)
+      .get(`/scheduled/${meetup_id}`)
+      .set('Authorization', `Bearer ${token}`)
+      .send();
+
+    expect(response.body).toMatchObject({
+      id: meetup_id,
+      localization,
+      description,
+      title,
+      user_id: id,
+      banner_id,
+      date: date.toISOString(),
+    });
   });
 });
