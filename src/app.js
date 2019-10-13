@@ -17,7 +17,7 @@ class App {
   constructor() {
     this.server = Express();
 
-    if (process.env.LOG) {
+    if (process.env.LOG === '1') {
       Sentry.init({ dsn: process.env.SENTRY_DSN });
     }
 
@@ -64,7 +64,7 @@ class App {
 
   routes() {
     this.server.use(routes);
-    if (process.env.LOG) {
+    if (process.env.LOG === '1') {
       this.server.use(Sentry.Handlers.errorHandler());
     }
   }
@@ -76,7 +76,7 @@ class App {
         return res.status(500).json(errors);
       }
 
-      if (process.env.LOG) {
+      if (process.env.LOG === '1') {
         Sentry.captureException(err);
       }
 

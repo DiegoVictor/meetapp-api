@@ -48,7 +48,7 @@ class Queue {
   }
 
   handleFailure(job, err) {
-    if (process.env.LOG) {
+    if (process.env.LOG === '1') {
       Sentry.captureMessage(`Queue ${job.queue.name}: FAILED`);
       Sentry.captureException(err);
     }
