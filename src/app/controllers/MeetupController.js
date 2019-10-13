@@ -1,5 +1,5 @@
 import { isBefore, parseISO } from 'date-fns';
-import { badRequest } from '@hapi/boom';
+import { unauthorized } from '@hapi/boom';
 
 import CreateMeetup from '../services/CreateMeetup';
 import EditMeetup from '../services/EditMeetup';
@@ -41,7 +41,7 @@ class MeetupController {
     });
 
     if (isBefore(meetup.date, new Date())) {
-      throw badRequest("You can't remove past meetups");
+      throw unauthorized("You can't remove past meetups");
     }
 
     await meetup.destroy();
