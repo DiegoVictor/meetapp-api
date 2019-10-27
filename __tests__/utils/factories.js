@@ -28,7 +28,7 @@ factory.define('Subscription', Subscription, {
 factory.define('User', User, {
   email: () => faker.internet.email(),
   name: faker.name.findName(),
-  password: faker.internet.password,
+  password: faker.internet.password(),
 });
 
 export default factory;
