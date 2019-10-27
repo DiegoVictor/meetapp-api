@@ -22,7 +22,9 @@ class MeetupAvailable {
       attributes: ['id'],
       where: { user_id },
     });
-    where.id = { [Op.notIn]: subscriptions };
+    where.id = {
+      [Op.notIn]: subscriptions.map(subscription => subscription.id),
+    };
 
     const meetups = await Meetup.findAll({
       include: [
