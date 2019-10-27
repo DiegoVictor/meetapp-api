@@ -25,6 +25,12 @@ $ docker run --name redismeetapp -p 6379:6379 -d -t redis:alpine
 $ docker start redismeetapp
 ```
 
+### Seed
+Optionally you can fill the database with some random data:
+```
+$ yarn sequelize db:seed:all
+```
+
 ## .env
 Just copy the `.env.example` in the application folder and set the remaning settings.
 
