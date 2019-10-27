@@ -1,5 +1,6 @@
 /node_modules
 tmp/uploads/*
+!tmp/uploads/example.png
 dist
 .env
 .env.test
