@@ -20,7 +20,7 @@ module.exports = {
       files.push({
         created_at: new Date(),
         name,
-        path: hex,
+        path: `${hex}.png`,
         updated_at: new Date(),
       });
     }
