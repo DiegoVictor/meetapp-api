@@ -34,7 +34,7 @@ class App {
     } else {
       this.server.use(
         cors({
-          origin: process.env.APP_URL,
+          origin: `${process.env.APP_URL}:${process.env.APP_PORT}`,
         })
       );
     }
