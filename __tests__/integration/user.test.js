@@ -46,7 +46,7 @@ describe('User', () => {
 
   it('should fail because the provided old password is wrong', async () => {
     const { id } = await factory.create('User');
-    const { password: new_password } = await factory.attrs('User');
+    const new_password = faker.internet.password();
     const token = jwtoken(id);
     const response = await request(app)
       .put('/users')
