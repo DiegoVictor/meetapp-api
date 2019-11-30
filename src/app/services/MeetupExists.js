@@ -1,4 +1,5 @@
 import { badRequest } from '@hapi/boom';
+
 import Meetup from '../models/Meetup';
 
 class MeetupExists {
