@@ -11,8 +11,8 @@ describe('File', () => {
     const { id } = await factory.create('User');
     const token = jwtoken(id);
 
-    const filen_name = 'ee59117ef6837153c44d7793ea3639c2.jpg';
-    const file_path = path.resolve(__dirname, '..', 'files', filen_name);
+    const file_name = 'ee59117ef6837153c44d7793ea3639c2.jpg';
+    const file_path = path.resolve(__dirname, '..', 'files', file_name);
 
     if (fs.existsSync(file_path)) {
       const response = await request(app)
@@ -23,7 +23,7 @@ describe('File', () => {
       expect(response.body).toMatchObject({
         id: expect.any(Number),
         url: expect.any(String),
-        name: filen_name,
+        name: file_name,
       });
     } else {
       throw Error('File does not exists!');
