@@ -1,5 +1,4 @@
 import Bee from 'bee-queue';
-import * as Sentry from '@sentry/node';
 
 import SubscriptionMail from '../app/jobs/SubscriptionMail';
 import redis from '../config/redis';
@@ -48,10 +47,6 @@ class Queue {
   }
 
   handleFailure(job, err) {
-    if (process.env.LOG === '1') {
-      Sentry.captureMessage(`Queue ${job.queue.name}: FAILED`);
-      Sentry.captureException(err);
-    }
     console.log(`Queue ${job.queue.name}: FAILED`, err);
   }
 }
