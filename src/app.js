@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import path from 'path';
 
 import routes from './routes';
+import RouteAliases from './app/middlewares/RouteAliases';
 import database from './database';
 
 database();
@@ -21,4 +22,5 @@ app.use(
   express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
 );
 
+app.use(RouteAliases);
 export default app;
