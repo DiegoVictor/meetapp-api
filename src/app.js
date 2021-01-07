@@ -1,5 +1,4 @@
-import './bootstrap';
-
+import 'dotenv/config';
 import 'express-async-errors';
 import cors from 'cors';
 import Express from 'express';
