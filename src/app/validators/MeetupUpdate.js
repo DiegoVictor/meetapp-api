@@ -1,20 +1,11 @@
-import * as Yup from 'yup';
-import { badRequest } from '@hapi/boom';
+import { celebrate, Segments, Joi } from 'celebrate';
 
-export default async (req, res, next) => {
-  try {
-    const schema = Yup.object().shape({
-      banner_id: Yup.number(),
-      date: Yup.date(),
-      description: Yup.string().min(10),
-      localization: Yup.string(),
-      title: Yup.string().min(6),
-    });
-
-    await schema.validate(req.body, { abortEarly: false });
-
-    return next();
-  } catch (err) {
-    throw badRequest('Validation fails', err.inner);
-  }
-};
+export default celebrate({
+  [Segments.BODY]: {
+    banner_id: Joi.number(),
+    date: Joi.date(),
+    description: Joi.string().min(10),
+    localization: Joi.string(),
+    title: Joi.string().min(6),
+  },
+});
