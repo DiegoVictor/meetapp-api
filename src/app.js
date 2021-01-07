@@ -4,6 +4,7 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import path from 'path';
+import { isBoom } from '@hapi/boom';
 import { errors } from 'celebrate';
 
 import routes from './routes';
@@ -25,4 +26,18 @@ app.use(
 
 app.use(RouteAliases);
 app.use(errors());
+app.use(async (err, _, res, next) => {
+  if (isBoom(err)) {
+    const { statusCode, payload } = err.output;
+
+    return res.status(statusCode).json({
+      ...payload,
+      ...err.data,
+      docs: process.env.DOCS_URL,
+    });
+  }
+
+  return next(err);
+});
+
 export default app;
