@@ -10,12 +10,10 @@ import redis from 'redis';
 import * as Sentry from '@sentry/node';
 import Youch from 'youch';
 
-import './database';
 import routes from './routes';
+import database from './database';
 
-class App {
-  constructor() {
-    this.server = Express();
+database();
 
     if (process.env.LOG === '1') {
       Sentry.init({ dsn: process.env.SENTRY_DSN });
