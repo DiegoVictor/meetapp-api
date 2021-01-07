@@ -4,6 +4,7 @@ import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
 import path from 'path';
+import { errors } from 'celebrate';
 
 import routes from './routes';
 import RouteAliases from './app/middlewares/RouteAliases';
@@ -23,4 +24,5 @@ app.use(
 );
 
 app.use(RouteAliases);
+app.use(errors());
 export default app;

@@ -16,6 +16,7 @@
     "@hapi/boom": "^8.0.1",
     "bcryptjs": "^2.4.3",
     "bee-queue": "^1.2.2",
+    "celebrate": "^13.0.4",
     "cors": "^2.8.5",
     "date-fns": "^2.0.1",
     "dotenv": "^8.1.0",
