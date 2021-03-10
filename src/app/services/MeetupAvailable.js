@@ -7,7 +7,7 @@ import Subscription from '../models/Subscription';
 import User from '../models/User';
 
 class MeetupAvailable {
-  async run({ date, page = 1, user_id }) {
+  async execute({ date, page = 1, limit, userId }) {
     const where = {};
 
     if (date) {
@@ -18,12 +18,12 @@ class MeetupAvailable {
 
     const subscriptions = await Subscription.findAll({
       attributes: ['id'],
-      where: { user_id },
+      where: { user_id: userId },
       raw: true,
     });
 
     where.id = {
-      [Op.notIn]: subscriptions,
+      [Op.notIn]: subscriptions.map(({ id }) => id),
     };
 
     const meetups = await Meetup.findAll({
@@ -37,8 +37,8 @@ class MeetupAvailable {
           model: File,
         },
       ],
-      limit: 10,
-      offset: 10 * (page - 1),
+      limit,
+      offset: limit * (page - 1),
       order: ['title', 'date'],
       where,
     });
