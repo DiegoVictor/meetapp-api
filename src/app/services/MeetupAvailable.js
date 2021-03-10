@@ -47,4 +47,4 @@ class MeetupAvailable {
   }
 }
 
-export default new MeetupAvailable();
+export default MeetupAvailable;
