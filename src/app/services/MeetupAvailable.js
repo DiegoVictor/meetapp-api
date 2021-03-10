@@ -6,9 +6,6 @@ import Meetup from '../models/Meetup';
 import Subscription from '../models/Subscription';
 import User from '../models/User';
 
-/**
- * Get meetups that user have not subscribed to
- */
 class MeetupAvailable {
   async run({ date, page = 1, user_id }) {
     const where = {};
