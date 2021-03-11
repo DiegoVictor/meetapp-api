@@ -7,7 +7,7 @@ class EmailAlreadyUsed {
     const user = await User.findOne({ where: { email } });
 
     if (user) {
-      throw badRequest('Email already in use');
+      throw badRequest('Email already in use', { code: 341 });
     }
   }
 }

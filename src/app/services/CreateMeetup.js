@@ -14,11 +14,13 @@ class CreateMeetup {
 
     const banner = await File.findByPk(banner_id);
     if (!banner) {
-      throw unauthorized('The provided banner does not exists');
+      throw unauthorized('The provided banner does not exists', 'sample', {
+        code: 141,
+      });
     }
 
     if (isBefore(parseISO(date), new Date())) {
-      throw badRequest('Past dates are not permited');
+      throw badRequest('Past dates are not permited', { code: 140 });
     }
 
     const meetup = await Meetup.create({ ...data, user_id });

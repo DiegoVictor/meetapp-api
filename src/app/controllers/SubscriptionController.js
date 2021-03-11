@@ -59,7 +59,9 @@ class SubscriptionCntroller {
     });
 
     if (!subscription) {
-      throw badRequest('Meetup or user does not exists');
+      throw badRequest('Meetup or user does not exists', {
+        code: 244,
+      });
     }
 
     subscription.destroy();

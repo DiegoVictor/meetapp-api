@@ -20,7 +20,7 @@ class UserController {
     }
 
     if (old_password && !(await user.checkPassword(old_password))) {
-      throw badRequest('Password does not match');
+      throw badRequest('Password does not match', { code: 340 });
     }
 
     const { id, name } = await user.update(req.body);

@@ -7,7 +7,7 @@ class MeetupExists {
     const meetup = await Meetup.findByPk(id);
 
     if (!meetup) {
-      throw badRequest('Meetup does not exists');
+      throw badRequest('Meetup does not exists', { code: 144 });
     }
 
     return meetup;

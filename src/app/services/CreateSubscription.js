@@ -26,12 +26,15 @@ class CreateSubscription {
 
     if (!meetup) {
       throw badRequest(
-        'Meetup does not exists or is owned by the provided user'
+        'Meetup does not exists or is owned by the provided user',
+        { code: 240 }
       );
     }
 
     if (isBefore(meetup.date, new Date())) {
-      throw unauthorized("You can't subscribe to a past meetup");
+      throw unauthorized("You can't subscribe to a past meetup", 'sample', {
+        code: 241,
+      });
     }
 
     const subscriptions = await Subscription.findAll({
@@ -49,7 +52,9 @@ class CreateSubscription {
     if (subscriptions.length > 0) {
       throw unauthorized(
         'You are already subscribed to this meetup ' +
-          'or there is another meetup in the same time'
+          'or there is another meetup in the same time',
+        'sample',
+        { code: 242 }
       );
     }
 

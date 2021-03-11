@@ -41,7 +41,9 @@ class MeetupController {
     });
 
     if (isBefore(meetup.date, new Date())) {
-      throw unauthorized("You can't remove past meetups");
+      throw unauthorized("You can't remove past meetups", 'sample', {
+        code: 143,
+      });
     }
 
     await meetup.destroy();

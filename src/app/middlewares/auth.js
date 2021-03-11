@@ -8,7 +8,7 @@ export default async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    throw unauthorized('Token not provided');
+    throw unauthorized('Token not provided', 'sample', { code: 441 });
   }
 
   const [, token] = authorization.split(' ');
@@ -17,7 +17,7 @@ export default async (req, res, next) => {
     const decoded = await promisify(jwt.verify)(token, SECRET);
     req.user_id = decoded.id;
   } catch (err) {
-    throw unauthorized('Token invalid');
+    throw unauthorized('Token invalid', 'sample', { code: 442 });
   }
 
   return next();

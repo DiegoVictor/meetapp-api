@@ -10,11 +10,11 @@ class SessionController {
 
     const user = await User.findOne({ where: { email } });
     if (!user) {
-      throw unauthorized('User not found');
+      throw unauthorized('User not found', 'sample', { code: 444 });
     }
 
     if (!(await user.checkPassword(password))) {
-      throw badRequest('Password does not match');
+      throw badRequest('Password does not match', { code: 440 });
     }
 
     const { id, name } = user;
