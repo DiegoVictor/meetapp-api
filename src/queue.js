@@ -1,4 +1,6 @@
 import 'dotenv/config';
 import Queue from './lib/Queue';
 
-Queue.process();
+const queue = new Queue();
+
+queue.process();
