@@ -25,6 +25,8 @@ app.use(
 );
 
 app.use(RouteAliases);
+app.use('/v1', routes);
+
 app.use(errors());
 app.use(async (err, _, res, next) => {
   if (isBoom(err)) {
