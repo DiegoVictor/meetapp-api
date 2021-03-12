@@ -2,8 +2,6 @@ import { unauthorized } from '@hapi/boom';
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 
-import { SECRET } from '../../config/auth';
-
 export default async (req, res, next) => {
   const { authorization } = req.headers;
 
@@ -14,7 +12,7 @@ export default async (req, res, next) => {
   const [, token] = authorization.split(' ');
 
   try {
-    const decoded = await promisify(jwt.verify)(token, SECRET);
+    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
     req.userId = decoded.id;
   } catch (err) {
