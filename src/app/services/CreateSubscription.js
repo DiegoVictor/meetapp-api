@@ -10,7 +10,7 @@ import Queue from '../../lib/Queue';
 import SubscriptionMail from '../jobs/SubscriptionMail';
 
 class CreateSubscription {
-  async run({ meetup_id, user_id }) {
+  async execute({ meetup_id, userId }) {
     const meetup = await Meetup.findOne({
       include: [
         {

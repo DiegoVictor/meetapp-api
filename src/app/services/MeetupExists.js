@@ -3,7 +3,7 @@ import { badRequest } from '@hapi/boom';
 import Meetup from '../models/Meetup';
 
 class MeetupExists {
-  async run({ id }) {
+  async execute({ id }) {
     const meetup = await Meetup.findByPk(id);
 
     if (!meetup) {

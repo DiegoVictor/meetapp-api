@@ -9,7 +9,7 @@ import File from '../models/File';
  * check for past dates
  */
 class CreateMeetup {
-  async run({ data, user_id }) {
+  async execute({ data, userId }) {
     const { banner_id, date } = data;
 
     const banner = await File.findByPk(banner_id);
