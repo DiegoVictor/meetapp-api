@@ -4,10 +4,6 @@ import { badRequest, unauthorized } from '@hapi/boom';
 import Meetup from '../models/Meetup';
 import File from '../models/File';
 
-/**
- * Prevent user to create a meetup with banner that not exists and
- * check for past dates
- */
 class CreateMeetup {
   async execute({ data, userId }) {
     const { banner_id, date } = data;
