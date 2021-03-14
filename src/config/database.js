@@ -9,7 +9,7 @@ module.exports = {
   },
   dialect: process.env.DB_DIALECT || 'postgres',
   host: process.env.DB_HOST,
-  logging: parseInt(process.env.SEQUELIZE_LOG, 10),
+  logging: !!parseInt(process.env.SEQUELIZE_LOG, 10),
   password: process.env.DB_PASS,
   port: process.env.DB_PORT,
   storage: './tests/database.sqlite',
