@@ -19,7 +19,7 @@ class CreateMeetup {
       throw badRequest('Past dates are not permited', { code: 140 });
     }
 
-    const meetup = await Meetup.create({ ...data, user_id });
+    const meetup = await Meetup.create({ ...data, user_id: userId });
     return meetup;
   }
 }
