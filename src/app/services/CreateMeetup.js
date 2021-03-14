@@ -1,4 +1,4 @@
-import { isBefore, parseISO } from 'date-fns';
+import { isBefore } from 'date-fns';
 import { badRequest, unauthorized } from '@hapi/boom';
 
 import Meetup from '../models/Meetup';
@@ -15,7 +15,7 @@ class CreateMeetup {
       });
     }
 
-    if (isBefore(parseISO(date), new Date())) {
+    if (isBefore(date, new Date())) {
       throw badRequest('Past dates are not permited', { code: 140 });
     }
 
