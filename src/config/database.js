@@ -12,6 +12,6 @@ module.exports = {
   logging: parseInt(process.env.SEQUELIZE_LOG, 10),
   password: process.env.DB_PASS,
   port: process.env.DB_PORT,
-  storage: './__tests__/database.sqlite',
+  storage: './tests/database.sqlite',
   username: process.env.DB_USER,
 };
