@@ -12,4 +12,4 @@ class EmailAlreadyUsed {
   }
 }
 
-export default new EmailAlreadyUsed();
+export default EmailAlreadyUsed;

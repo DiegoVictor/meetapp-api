@@ -28,4 +28,4 @@ class CreateMeetup {
   }
 }
 
-export default new CreateMeetup();
+export default CreateMeetup;

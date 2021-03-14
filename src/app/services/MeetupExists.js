@@ -14,4 +14,4 @@ class MeetupExists {
   }
 }
 
-export default new MeetupExists();
+export default MeetupExists;

@@ -66,4 +66,4 @@ class CreateSubscription {
   }
 }
 
-export default new CreateSubscription();
+export default CreateSubscription;
