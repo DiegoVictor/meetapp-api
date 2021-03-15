@@ -9,6 +9,9 @@ import User from '../models/User';
 import Queue from '../../lib/Queue';
 import SubscriptionMail from '../jobs/SubscriptionMail';
 
+const queue = new Queue();
+const subscriptionMail = new SubscriptionMail();
+
 class CreateSubscription {
   async execute({ meetup_id, userId }) {
     const meetup = await Meetup.findOne({
@@ -64,7 +67,7 @@ class CreateSubscription {
     });
     const user = await User.findByPk(userId);
 
-    await Queue.add(SubscriptionMail.key, { meetup, user });
+    await queue.add(subscriptionMail.key, { meetup, user });
     return subscription;
   }
 }
