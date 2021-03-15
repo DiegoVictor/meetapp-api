@@ -1,5 +1,3 @@
-require('../bootstrap');
-
 module.exports = {
   database: process.env.DB_NAME,
   define: {
@@ -7,7 +5,7 @@ module.exports = {
     underscored: true,
     underscoredAll: true,
   },
-  dialect: process.env.DB_DIALECT || 'postgres',
+  dialect: process.env.NODE_ENV === 'test' ? 'sqlite' : 'postgres',
   host: process.env.DB_HOST,
   logging: !!parseInt(process.env.SEQUELIZE_LOG, 10),
   password: process.env.DB_PASS,
