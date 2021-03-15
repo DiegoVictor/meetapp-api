@@ -13,7 +13,7 @@ class UserController {
 
   async update(req, res) {
     const { email, old_password } = req.body;
-    const user = await User.findByPk(req.user_id);
+    const user = await User.findByPk(req.userId);
 
     if (email && email !== user.email) {
       await EmailAlreadyUsed.run({ email });
