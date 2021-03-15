@@ -20,7 +20,7 @@ class CreateSubscription {
       ],
       where: {
         id: meetup_id,
-        user_id: { [Op.ne]: user_id },
+        user_id: { [Op.ne]: userId },
       },
     });
 
@@ -46,7 +46,7 @@ class CreateSubscription {
           where: { [Op.or]: [{ id: meetup_id }, { date: meetup.date }] },
         },
       ],
-      where: { user_id },
+      where: { user_id: userId },
     });
 
     if (subscriptions.length > 0) {
@@ -58,8 +58,11 @@ class CreateSubscription {
       );
     }
 
-    const subscription = await Subscription.create({ meetup_id, user_id });
-    const user = await User.findByPk(user_id);
+    const subscription = await Subscription.create({
+      meetup_id,
+      user_id: userId,
+    });
+    const user = await User.findByPk(userId);
 
     await Queue.add(SubscriptionMail.key, { meetup, user });
     return subscription;
