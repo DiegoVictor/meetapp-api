@@ -5,7 +5,7 @@ import Multer from 'multer';
 export default {
   storage: Multer.diskStorage({
     destination: resolve(__dirname, '..', '..', 'tmp', 'uploads'),
-    filename: (req, file, callback) => {
+    filename: (_, file, callback) => {
       Crypto.randomBytes(16, (err, res) => {
         if (err) {
           return callback(err);
