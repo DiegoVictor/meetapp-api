@@ -13,7 +13,8 @@ class Mail {
   }
 
   templates() {
-    const view_path = resolve(__dirname, '..', 'app', 'views', 'emails');
+    const viewPath = resolve(__dirname, '..', 'app', 'views', 'emails');
+
     this.transporter.use(
       'compile',
       nodemailerhbs({
@@ -21,10 +22,10 @@ class Mail {
         viewEngine: exphbs.create({
           defaultLayout: 'default',
           extname: '.hbs',
-          layoutsDir: resolve(view_path, 'layouts'),
-          partialsDir: resolve(view_path, 'partials'),
+          layoutsDir: resolve(viewPath, 'layouts'),
+          partialsDir: resolve(viewPath, 'partials'),
         }),
-        viewPath: view_path,
+        viewPath,
       })
     );
   }
