@@ -68,4 +68,4 @@ class SubscriptionCntroller {
     return res.json(subscription);
   }
 }
-export default new SubscriptionCntroller();
+export default SubscriptionCntroller;

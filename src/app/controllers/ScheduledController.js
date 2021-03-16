@@ -26,4 +26,4 @@ class ScheduledController {
   }
 }
 
-export default new ScheduledController();
+export default ScheduledController;

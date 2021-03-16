@@ -51,4 +51,4 @@ class MeetupController {
   }
 }
 
-export default new MeetupController();
+export default MeetupController;
