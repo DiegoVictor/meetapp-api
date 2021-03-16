@@ -21,7 +21,7 @@ class SubscriptionCntroller {
           model: Subscription,
           required: true,
           where: {
-            user_id: req.user_id,
+            user_id: userId,
           },
         },
         {
@@ -42,6 +42,7 @@ class SubscriptionCntroller {
 
   async store(req, res) {
     const { meetup_id } = req.body;
+    const { userId } = req;
     const { user_id } = req;
     const subscription = await CreateSubscription.run({ meetup_id, user_id });
 
@@ -54,7 +55,7 @@ class SubscriptionCntroller {
       attributes: ['id'],
       where: {
         meetup_id: id,
-        user_id: req.user_id,
+        user_id: req.userId,
       },
     });
 
@@ -65,6 +66,7 @@ class SubscriptionCntroller {
     }
 
     subscription.destroy();
+
     return res.json(subscription);
   }
 }
