@@ -8,6 +8,8 @@ import Subscription from '../models/Subscription';
 import User from '../models/User';
 import CreateSubscription from '../services/CreateSubscription';
 
+const createSubscription = new CreateSubscription();
+
 class SubscriptionCntroller {
   async index(req, res) {
     const subscriptions = await Meetup.findAll({
