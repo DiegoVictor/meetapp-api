@@ -45,8 +45,11 @@ class SubscriptionCntroller {
   async store(req, res) {
     const { meetup_id } = req.body;
     const { userId } = req;
-    const { user_id } = req;
-    const subscription = await CreateSubscription.run({ meetup_id, user_id });
+
+    const subscription = await createSubscription.execute({
+      meetup_id,
+      userId,
+    });
 
     return res.json(subscription);
   }
