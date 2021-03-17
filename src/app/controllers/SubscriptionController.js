@@ -14,6 +14,7 @@ const createSubscription = new CreateSubscription();
 class SubscriptionCntroller {
   async index(req, res) {
     const { currentUrl, userId } = req;
+    const { page = 1 } = req.query;
     const limit = 20;
     const where = {
       date: {
@@ -41,11 +42,9 @@ class SubscriptionCntroller {
         },
       ],
       order: ['date'],
-      where: {
-        date: {
-          [Op.gte]: setSeconds(setMinutes(setHours(new Date(), 0), 0), 0),
-        },
-      },
+      where,
+      limit,
+      offset: limit * (page - 1),
     });
 
     const count = await Meetup.count({ where });
