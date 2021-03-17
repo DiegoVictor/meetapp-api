@@ -7,11 +7,14 @@ import Meetup from '../models/Meetup';
 import Subscription from '../models/Subscription';
 import User from '../models/User';
 import CreateSubscription from '../services/CreateSubscription';
+import paginationLinks from '../helpers/paginationLinks';
 
 const createSubscription = new CreateSubscription();
 
 class SubscriptionCntroller {
   async index(req, res) {
+    const { currentUrl, userId } = req;
+    const limit = 20;
     const where = {
       date: {
         [Op.gte]: setSeconds(setMinutes(setHours(new Date(), 0), 0), 0),
@@ -47,6 +50,12 @@ class SubscriptionCntroller {
 
     const count = await Meetup.count({ where });
     res.header('X-Total-Count', count);
+
+    const pages_total = Math.ceil(count / limit);
+    if (pages_total > 1) {
+      res.links(paginationLinks(page, pages_total, currentUrl));
+    }
+
     return res.json(subscriptions);
   }
 
