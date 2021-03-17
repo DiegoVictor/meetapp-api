@@ -12,6 +12,12 @@ const createSubscription = new CreateSubscription();
 
 class SubscriptionCntroller {
   async index(req, res) {
+    const where = {
+      date: {
+        [Op.gte]: setSeconds(setMinutes(setHours(new Date(), 0), 0), 0),
+      },
+    };
+
     const subscriptions = await Meetup.findAll({
       include: [
         {
@@ -39,6 +45,8 @@ class SubscriptionCntroller {
       },
     });
 
+    const count = await Meetup.count({ where });
+    res.header('X-Total-Count', count);
     return res.json(subscriptions);
   }
 
