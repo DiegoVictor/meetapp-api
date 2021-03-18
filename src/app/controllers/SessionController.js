@@ -1,7 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { badRequest, unauthorized } from '@hapi/boom';
 
-import { SECRET, EXPIRATION_TIME } from '../../config/auth';
 import User from '../models/User';
 
 class SessionController {
@@ -19,8 +18,8 @@ class SessionController {
 
     const { id, name } = user;
     return res.json({
-      token: jwt.sign({ id }, SECRET, {
-        expiresIn: EXPIRATION_TIME,
+      token: jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: process.env.JWT_EXPIRATION_TIME,
       }),
       user: { id, email, name },
     });
