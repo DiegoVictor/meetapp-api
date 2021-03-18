@@ -2,11 +2,12 @@ import { isBefore, parseISO } from 'date-fns';
 import { unauthorized } from '@hapi/boom';
 
 import CreateMeetup from '../services/CreateMeetup';
-import EditMeetup from '../services/EditMeetup';
+import UpdateMeetup from '../services/UpdateMeetup';
 import MeetupAvailable from '../services/MeetupAvailable';
 import MeetupExists from '../services/MeetupExists';
 
 const meetupExists = new MeetupExists();
+const updateMeetup = new UpdateMeetup();
 class MeetupController {
   async index(req, res) {
     const { date, page } = req.query;
@@ -27,7 +28,7 @@ class MeetupController {
   }
 
   async update(req, res) {
-    const meetup = await EditMeetup.run({
+    const meetup = await updateMeetup.execute({
       data: req.body,
       meetup: await MeetupExists.run({ id: req.params.id }),
       user_id: req.user_id,
