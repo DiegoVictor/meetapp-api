@@ -7,6 +7,7 @@ import MeetupAvailable from '../services/MeetupAvailable';
 import MeetupExists from '../services/MeetupExists';
 
 const meetupExists = new MeetupExists();
+const createMeetup = new CreateMeetup();
 const updateMeetup = new UpdateMeetup();
 class MeetupController {
   async index(req, res) {
@@ -22,6 +23,7 @@ class MeetupController {
 
   async store(req, res) {
     const { userId, body: data } = req;
+    const meetup = await createMeetup.execute({ data, userId });
 
     return res.json(meetup);
   }
