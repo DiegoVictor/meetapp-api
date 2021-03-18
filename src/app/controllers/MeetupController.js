@@ -21,8 +21,7 @@ class MeetupController {
   }
 
   async store(req, res) {
-    const { user_id, body: data } = req;
-    const meetup = await CreateMeetup.run({ data, user_id });
+    const { userId, body: data } = req;
 
     return res.json(meetup);
   }
@@ -30,8 +29,8 @@ class MeetupController {
   async update(req, res) {
     const meetup = await updateMeetup.execute({
       data: req.body,
-      meetup: await MeetupExists.run({ id: req.params.id }),
-      user_id: req.user_id,
+      meetup: await meetupExists.execute({ id: req.params.id }),
+      userId: req.userId,
     });
 
     return res.json(meetup);
