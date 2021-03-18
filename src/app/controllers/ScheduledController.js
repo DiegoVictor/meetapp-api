@@ -1,5 +1,8 @@
 import File from '../models/File';
 import Meetup from '../models/Meetup';
+import MeetupExists from '../services/MeetupExists';
+
+const meetupExists = new MeetupExists();
 
 class ScheduledController {
   async index(req, res) {
