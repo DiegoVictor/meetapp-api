@@ -23,19 +23,16 @@ class ScheduledController {
   }
 
   async show(req, res) {
-    const meetup = await Meetup.findOne({
-      include: [
-        {
-          as: 'banner',
-          model: File,
-        },
-      ],
-      where: {
-        id: req.params.id,
-        user_id: req.user_id,
-      },
+    const { currentUrl } = req;
+    const meetup = await meetupExists.execute({ id: req.params.id });
+
+    const banner = await meetup.getBanner();
+
+    return res.json({
+      ...meetup.toJSON(),
+      banner,
+      url: `${currentUrl}/${meetup.id}`,
     });
-    return res.json(meetup);
   }
 }
 
