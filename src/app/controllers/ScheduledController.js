@@ -6,10 +6,10 @@ const meetupExists = new MeetupExists();
 
 class ScheduledController {
   async index(req, res) {
-    const meetups = await Meetup.findAll({
-      where: { user_id: req.user_id },
-    });
-    return res.json(meetups);
+    const where = { user_id: userId };
+    const meetups = await Meetup.findAll({ where });
+    const count = await Meetup.count({ where });
+    res.header('X-Total-Count', count);
   }
 
   async show(req, res) {
