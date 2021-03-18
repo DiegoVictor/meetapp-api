@@ -12,10 +12,13 @@ const updateMeetup = new UpdateMeetup();
 class MeetupController {
   async index(req, res) {
     const { date, page } = req.query;
-    const meetups = await MeetupAvailable.run({
+    const limit = 20;
+
+    const meetups = await meetupAvailable.execute({
       date: date ? parseISO(date) : null,
       page,
-      user_id: req.user_id,
+      limit,
+      userId,
     });
 
     return res.json(meetups);
