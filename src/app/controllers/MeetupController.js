@@ -6,6 +6,7 @@ import EditMeetup from '../services/EditMeetup';
 import MeetupAvailable from '../services/MeetupAvailable';
 import MeetupExists from '../services/MeetupExists';
 
+const meetupExists = new MeetupExists();
 class MeetupController {
   async index(req, res) {
     const { date, page } = req.query;
@@ -36,7 +37,7 @@ class MeetupController {
   }
 
   async delete(req, res) {
-    const meetup = await MeetupExists.run({
+    const meetup = await meetupExists.execute({
       id: req.params.id,
     });
 
@@ -47,6 +48,7 @@ class MeetupController {
     }
 
     await meetup.destroy();
+
     return res.json(meetup);
   }
 }
