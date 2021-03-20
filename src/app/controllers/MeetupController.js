@@ -5,6 +5,7 @@ import CreateMeetup from '../services/CreateMeetup';
 import UpdateMeetup from '../services/UpdateMeetup';
 import MeetupAvailable from '../services/MeetupAvailable';
 import MeetupExists from '../services/MeetupExists';
+import paginationLinks from '../helpers/paginationLinks';
 
 const meetupExists = new MeetupExists();
 const createMeetup = new CreateMeetup();
