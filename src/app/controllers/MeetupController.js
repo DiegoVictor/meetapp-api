@@ -32,6 +32,15 @@ class MeetupController {
     if (pages_total > 1) {
       res.links(paginationLinks(page, pages_total, currentUrl));
     }
+
+    return res.json(
+      meetups.map(meetup => {
+        return {
+          ...meetup.toJSON(),
+          url: `${currentUrl}/${meetup.id}`,
+        };
+      })
+    );
   }
 
   async store(req, res) {
