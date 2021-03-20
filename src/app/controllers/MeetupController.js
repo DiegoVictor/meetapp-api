@@ -21,7 +21,11 @@ class MeetupController {
       userId,
     });
 
-    return res.json(meetups);
+    const count = await meetupAvailableCount.execute({
+      date: date ? parseISO(date) : null,
+      userId,
+    });
+    res.header('X-Total-Count', count);
   }
 
   async store(req, res) {
