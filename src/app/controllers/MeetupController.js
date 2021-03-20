@@ -11,6 +11,7 @@ const createMeetup = new CreateMeetup();
 const updateMeetup = new UpdateMeetup();
 class MeetupController {
   async index(req, res) {
+    const { currentUrl, userId } = req;
     const { date, page } = req.query;
     const limit = 20;
 
@@ -26,6 +27,11 @@ class MeetupController {
       userId,
     });
     res.header('X-Total-Count', count);
+
+    const pages_total = Math.ceil(count / limit);
+    if (pages_total > 1) {
+      res.links(paginationLinks(page, pages_total, currentUrl));
+    }
   }
 
   async store(req, res) {
