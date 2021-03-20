@@ -4,12 +4,16 @@ import { unauthorized } from '@hapi/boom';
 import CreateMeetup from '../services/CreateMeetup';
 import UpdateMeetup from '../services/UpdateMeetup';
 import MeetupAvailable from '../services/MeetupAvailable';
+import MeetupAvailableCount from '../services/MeetupAvailableCount';
 import MeetupExists from '../services/MeetupExists';
 import paginationLinks from '../helpers/paginationLinks';
 
 const meetupExists = new MeetupExists();
 const createMeetup = new CreateMeetup();
 const updateMeetup = new UpdateMeetup();
+const meetupAvailable = new MeetupAvailable();
+const meetupAvailableCount = new MeetupAvailableCount();
+
 class MeetupController {
   async index(req, res) {
     const { currentUrl, userId } = req;
