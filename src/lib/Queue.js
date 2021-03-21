@@ -41,4 +41,4 @@ class Queue {
   }
 }
 
-export default new Queue();
+export default Queue;
