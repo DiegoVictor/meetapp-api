@@ -3,6 +3,6 @@
     "js": "sucrase-node"
   },
   "ignore": [
-    "__tests__"
+    "tests"
   ]
 }
