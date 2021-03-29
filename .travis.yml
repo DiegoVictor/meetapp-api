@@ -3,7 +3,7 @@ install:
   - npm install
   - npm install -g codecov
 node_js:
-  - 14
+  - 12
 script:
   - yarn test
   - codecov
