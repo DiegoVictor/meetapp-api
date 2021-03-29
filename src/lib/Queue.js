@@ -1,4 +1,6 @@
 import Bee from 'bee-queue';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { createClient } from 'redis-mock';
 
 import SubscriptionMail from '../app/jobs/SubscriptionMail';
 
@@ -14,10 +16,13 @@ class Queue {
     jobs.forEach(({ key, handle }) => {
       this.queues[key] = {
         bee: new Bee(key, {
-          redis: {
-            host: process.env.REDIS_HOST,
-            port: process.env.REDIS_PORT,
-          },
+          redis:
+            process.env.NODE_ENV === 'test'
+              ? createClient()
+              : {
+                  host: process.env.REDIS_HOST,
+                  port: process.env.REDIS_PORT,
+                },
         }),
         handle,
       };
