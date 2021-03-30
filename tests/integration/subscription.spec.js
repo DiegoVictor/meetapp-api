@@ -150,6 +150,49 @@ describe('Subscription', () => {
     );
   });
 
+  it("should be able to retrieve the second page of user's subscriptions that not occur yet", async () => {
+    const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
+    const token = jwtoken(id);
+
+    const meetups = await factory.createMany('Meetup', 60, { user_id });
+
+    await Promise.all(
+      meetups.map(meetup =>
+        factory.create('Subscription', { meetup_id: meetup.id, user_id: id })
+      )
+    );
+
+    const response = await request(app)
+      .get('/v1/subscriptions?page=2')
+      .set('Authorization', `Bearer ${token}`)
+      .send();
+
+    expect.extend({
+      isAfter(received, date) {
+        if (isAfter(parseISO(received), date)) {
+          return {
+            message: () =>
+              `expected ${received} to not be a later date than ${date.toISOString()}`,
+            pass: true,
+          };
+        }
+        return {
+          message: () =>
+            `expected ${received} to be a earlier date than ${date.toISOString()}`,
+          pass: false,
+        };
+      },
+    });
+
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(20);
+    expect(response.body).toContainEqual(
+      expect.objectContaining({
+        date: expect.isAfter(new Date()),
+      })
+    );
+  });
+
   it('should be able to remove a subscription', async () => {
     const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
     const { id: meetup_id } = await factory.create('Meetup', { user_id });
@@ -169,10 +212,8 @@ describe('Subscription', () => {
   });
 
   it('should not be able to remove a subscription that not exists', async () => {
-    const { id } = await factory.create('User');
-    const meetup = await Meetup.findOne({
-      order: [['createdAt', 'DESC']],
-    });
+    const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
+    const meetup = await factory.create('Meetup', { user_id });
     const meetup_id = meetup.id;
 
     await meetup.destroy();

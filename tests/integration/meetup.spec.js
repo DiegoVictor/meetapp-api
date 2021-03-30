@@ -39,6 +39,45 @@ describe('Meetup', () => {
     );
   });
 
+  it('should be able to get only meetups not scheduled by yourself', async () => {
+    const [{ id }, organizer] = await factory.createMany('User', 2);
+    const token = jwtoken(id);
+
+    const [meetup, scheduledMeetup] = await factory.createMany('Meetup', 2, {
+      user_id: organizer.id,
+    });
+    await factory.create('Subscription', {
+      user_id: id,
+      meetup_id: scheduledMeetup.id,
+    });
+
+    const response = await request(app)
+      .get('/v1/meetups')
+      .set('Authorization', `Bearer ${token}`)
+      .send();
+
+    const organizerJson = {
+      ...organizer.toJSON(),
+      createdAt: organizer.createdAt.toISOString(),
+      updatedAt: organizer.updatedAt.toISOString(),
+    };
+
+    delete organizerJson.password;
+
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBe(1);
+    expect(response.body).toContainEqual({
+      ...meetup.toJSON(),
+      banner: null,
+      banner_id: null,
+      createdAt: meetup.createdAt.toISOString(),
+      updatedAt: meetup.updatedAt.toISOString(),
+      date: meetup.date.toISOString(),
+      organizer: organizerJson,
+      url: `${process.env.APP_URL}:${process.env.APP_PORT}/v1/meetups/${meetup.id}`,
+    });
+  });
+
   it("should get meetups with it's organizers", async () => {
     const [{ id }, { id: user_id, name }] = await factory.createMany('User', 2);
     const token = jwtoken(id);
@@ -88,7 +127,7 @@ describe('Meetup', () => {
     const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
     const token = jwtoken(id);
 
-    await factory.createMany('Meetup', 40, { user_id });
+    await factory.createMany('Meetup', 60, { user_id });
 
     const response = await request(app)
       .get(`/v1/meetups?page=2`)
@@ -124,9 +163,7 @@ describe('Meetup', () => {
 
   it('should fail because the provided banner not exists', async () => {
     const { id } = await factory.create('User');
-    const banner = await File.findOne({
-      order: [['createdAt', 'DESC']],
-    });
+    const banner = await factory.create('File');
     const meetup = await factory.attrs('Meetup', {
       banner_id: banner.id,
     });
