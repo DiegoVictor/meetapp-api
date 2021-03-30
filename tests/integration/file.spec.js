@@ -3,10 +3,15 @@ import path from 'path';
 import request from 'supertest';
 
 import app from '../../src/app';
+import User from '../../src/app/models/User';
 import factory from '../utils/factory';
 import jwtoken from '../utils/jwtoken';
 
 describe('File', () => {
+  beforeEach(async () => {
+    await User.truncate();
+  });
+
   it('should be able to register a file', async () => {
     const { id } = await factory.create('User');
     const token = jwtoken(id);

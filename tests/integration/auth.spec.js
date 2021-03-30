@@ -2,10 +2,15 @@ import faker from 'faker';
 import request from 'supertest';
 
 import app from '../../src/app';
+import User from '../../src/app/models/User';
 import factory from '../utils/factory';
 import jwtoken from '../utils/jwtoken';
 
 describe('Auth', () => {
+  beforeEach(async () => {
+    await User.truncate();
+  });
+
   it('should fail because a JWT token was not provided', async () => {
     const response = await request(app)
       .post('/v1')

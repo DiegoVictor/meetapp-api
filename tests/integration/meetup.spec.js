@@ -5,8 +5,20 @@ import app from '../../src/app';
 import factory from '../utils/factory';
 import jwtoken from '../utils/jwtoken';
 import File from '../../src/app/models/File';
+import User from '../../src/app/models/User';
+import Meetup from '../../src/app/models/Meetup';
+import Subscription from '../../src/app/models/Subscription';
 
 describe('Meetup', () => {
+  beforeEach(async () => {
+    await Promise.all([
+      User.truncate(),
+      Meetup.truncate(),
+      Subscription.truncate(),
+      File.truncate(),
+    ]);
+  });
+
   it('should be able to get a page of meetups (20 itens)', async () => {
     const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
     const token = jwtoken(id);

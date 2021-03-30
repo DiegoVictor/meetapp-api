@@ -6,8 +6,13 @@ import app from '../../src/app';
 import factory from '../utils/factory';
 import jwtoken from '../utils/jwtoken';
 import Meetup from '../../src/app/models/Meetup';
+import User from '../../src/app/models/User';
 
 describe('Subscription', () => {
+  beforeEach(async () => {
+    await Promise.all([User.truncate(), Meetup.truncate()]);
+  });
+
   it('should be able to subscribe to meetup', async () => {
     const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
     const { id: meetup_id } = await factory.create('Meetup', { user_id });

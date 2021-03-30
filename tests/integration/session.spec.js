@@ -5,8 +5,13 @@ import request from 'supertest';
 
 import app from '../../src/app';
 import factory from '../utils/factory';
+import User from '../../src/app/models/User';
 
 describe('Session', () => {
+  beforeEach(async () => {
+    await User.truncate();
+  });
+
   it('should be able to authenticate user', async () => {
     const password = '123456';
     const { id, name, email } = await factory.create('User', {

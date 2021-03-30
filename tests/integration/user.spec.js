@@ -3,10 +3,15 @@ import faker from 'faker';
 import request from 'supertest';
 
 import app from '../../src/app';
+import User from '../../src/app/models/User';
 import factory from '../utils/factory';
 import jwtoken from '../utils/jwtoken';
 
 describe('User', () => {
+  beforeEach(async () => {
+    await User.truncate();
+  });
+
   it('should be able to register a user', async () => {
     const user = await factory.attrs('User');
     const response = await request(app)

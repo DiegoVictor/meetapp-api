@@ -1,10 +1,16 @@
 import request from 'supertest';
 
 import app from '../../src/app';
+import Meetup from '../../src/app/models/Meetup';
+import User from '../../src/app/models/User';
 import factory from '../utils/factory';
 import jwtoken from '../utils/jwtoken';
 
 describe('Scheduled', () => {
+  beforeEach(async () => {
+    await Promise.all([User.truncate(), Meetup.truncate()]);
+  });
+
   it("should return user's scheduled meetups", async () => {
     const { id } = await factory.create('User');
     const token = jwtoken(id);
