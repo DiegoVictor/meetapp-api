@@ -11,7 +11,7 @@ import paginationLinks from '../helpers/paginationLinks';
 
 const createSubscription = new CreateSubscription();
 
-class SubscriptionCntroller {
+class SubscriptionController {
   async index(req, res) {
     const { currentUrl, userId } = req;
     const { page = 1 } = req.query;
@@ -91,4 +91,4 @@ class SubscriptionCntroller {
     return res.json(subscription);
   }
 }
-export default SubscriptionCntroller;
+export default SubscriptionController;
