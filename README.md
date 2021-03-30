@@ -11,7 +11,7 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
 [![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Meetapp&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Fmeetapp-api%2Fmaster%2FInsomnia_2020-12-20.json)
 
-Responsible for provide data to the [`web`](https://github.com/DiegoVictor/meetapp-web) and [`mobile`](https://github.com/DiegoVictor/meetapp-app) front-ends. users to rent their companies' spot to another users. The app has, pagination, pagination's link header (to previous, next, first and last page), friendly errors, use JWT to logins, validation, also a simple versioning was made.
+Responsible for provide data to the [`web`](https://github.com/DiegoVictor/meetapp-web) and [`mobile`](https://github.com/DiegoVictor/meetapp-app) front-ends. Allow users to create their meetups' and/or subscribe to from other users. The app has, pagination, pagination's link header (to previous, next, first and last page), friendly errors, use JWT to logins, validation, also a simple versioning was made.
 
 ## Table of Contents
 * [Installing](#installing)
