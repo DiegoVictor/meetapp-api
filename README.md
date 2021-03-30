@@ -46,10 +46,10 @@ $ npm install
 > Was installed and configured the [`eslint`](https://eslint.org/) and [`prettier`](https://prettier.io/) to keep the code clean and patterned.
 
 ## Configuring
-The application use two databases: [Postgres](https://www.postgresql.org/) and [Redis](https://redis.io/).
+The application use two databases: [Postgres](https://www.postgresql.org/) and [Redis](https://redis.io/). For the fastest setup is recommended to use [docker](https://www.docker.com), see below how to setup ever database.
 
 ### Redis
-Responsible to store data utilized by the mail queue. For the fastest setup is recommended to use [docker](https://www.docker.com), you can create a redis container like so:
+Responsible to store data utilized by the mail queue. You can create a redis container like so:
 ```
 $ docker run --name meetapp-redis -d -p 6379:6379 redis:alpine
 ```
