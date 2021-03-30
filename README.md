@@ -1,4 +1,4 @@
-# [API] Be The Hero
+# [API] Meetapp
 [![Travis (.com)](https://img.shields.io/travis/DiegoVictor/meetapp-api?logo=travis&style=flat-square)](https://travis-ci.com/DiegoVictor/meetapp-api)
 [![postgres](https://img.shields.io/badge/postgres-7.18.2-326690?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![redis](https://img.shields.io/badge/redis-2.8.0-d92b21?style=flat-square&logo=redis&logoColor=white)](https://redis.io/)
