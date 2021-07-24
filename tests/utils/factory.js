@@ -8,7 +8,7 @@ import Subscription from '../../src/app/models/Subscription';
 
 factory.define('File', File, {
   name: faker.image.image,
-  path: faker.random.uuid,
+  path: faker.datatype.uuid,
 });
 
 factory.define('Meetup', Meetup, {
