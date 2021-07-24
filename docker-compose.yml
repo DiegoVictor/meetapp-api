@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  pg:
+    image: postgres
+    container_name: pg
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: meetapp
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app_network
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+    volumes:
+      - redisdata:/data
+    networks:
+      - app_network
+  app:
+    build: .
+    depends_on:
+      - redis
+      - pg
+    ports:
+      - 3333:3333
+    volumes:
+      - .:/usr/src/app
+    networks:
+      - app_network
+volumes:
+  pgdata:
+    driver: local
+  redisdata:
+    driver: local
+networks:
+  app_network:
+    driver: bridge
