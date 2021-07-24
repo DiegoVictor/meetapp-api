@@ -8,7 +8,7 @@ import { isBoom } from '@hapi/boom';
 import { errors } from 'celebrate';
 
 import routes from './routes';
-import RouteAliases from './app/middlewares/RouteAliases';
+import routeAliases from './app/middlewares/routeAliases';
 import database from './database';
 
 database();
@@ -24,7 +24,7 @@ app.use(
   express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
 );
 
-app.use(RouteAliases);
+app.use(routeAliases);
 app.use('/v1', routes);
 
 app.use(errors());

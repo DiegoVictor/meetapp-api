@@ -7,14 +7,14 @@ import users from './users';
 import files from './files';
 import sessions from './sessions';
 
-import Auth from '../app/middlewares/Auth';
+import auth from '../app/middlewares/auth';
 
 const app = new Router();
 
 app.use(sessions);
 app.use(users);
 
-app.use(Auth);
+app.use(auth);
 
 app.use(files);
 app.use(meetups);
