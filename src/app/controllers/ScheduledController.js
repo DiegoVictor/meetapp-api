@@ -1,8 +1,6 @@
 import Meetup from '../models/Meetup';
 import MeetupExists from '../services/MeetupExists';
 
-const meetupExists = new MeetupExists();
-
 class ScheduledController {
   async index(req, res) {
     const { currentUrl, userId } = req;
@@ -23,6 +21,8 @@ class ScheduledController {
 
   async show(req, res) {
     const { currentUrl } = req;
+
+    const meetupExists = new MeetupExists();
     const meetup = await meetupExists.execute({ id: req.params.id });
 
     const banner = await meetup.getBanner();

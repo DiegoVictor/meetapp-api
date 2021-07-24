@@ -9,8 +9,6 @@ import User from '../models/User';
 import CreateSubscription from '../services/CreateSubscription';
 import paginationLinks from '../helpers/paginationLinks';
 
-const createSubscription = new CreateSubscription();
-
 class SubscriptionController {
   async index(req, res) {
     const { currentUrl, userId } = req;
@@ -62,6 +60,7 @@ class SubscriptionController {
     const { meetup_id } = req.body;
     const { userId } = req;
 
+    const createSubscription = new CreateSubscription();
     const subscription = await createSubscription.execute({
       meetup_id,
       userId,

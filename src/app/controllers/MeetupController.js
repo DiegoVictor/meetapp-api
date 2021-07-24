@@ -9,10 +9,6 @@ import MeetupExists from '../services/MeetupExists';
 import paginationLinks from '../helpers/paginationLinks';
 
 const meetupExists = new MeetupExists();
-const createMeetup = new CreateMeetup();
-const updateMeetup = new UpdateMeetup();
-const meetupAvailable = new MeetupAvailable();
-const meetupAvailableCount = new MeetupAvailableCount();
 
 class MeetupController {
   async index(req, res) {
@@ -20,6 +16,7 @@ class MeetupController {
     const { date, page } = req.query;
     const limit = 20;
 
+    const meetupAvailable = new MeetupAvailable();
     const meetups = await meetupAvailable.execute({
       date: date ? parseISO(date) : null,
       page,
@@ -27,6 +24,7 @@ class MeetupController {
       userId,
     });
 
+    const meetupAvailableCount = new MeetupAvailableCount();
     const count = await meetupAvailableCount.execute({
       date: date ? parseISO(date) : null,
       userId,
@@ -39,23 +37,24 @@ class MeetupController {
     }
 
     return res.json(
-      meetups.map(meetup => {
-        return {
-          ...meetup.toJSON(),
-          url: `${currentUrl}/${meetup.id}`,
-        };
-      })
+      meetups.map(meetup => ({
+        ...meetup.toJSON(),
+        url: `${currentUrl}/${meetup.id}`,
+      }))
     );
   }
 
   async store(req, res) {
     const { userId, body: data } = req;
+
+    const createMeetup = new CreateMeetup();
     const meetup = await createMeetup.execute({ data, userId });
 
     return res.json(meetup);
   }
 
   async update(req, res) {
+    const updateMeetup = new UpdateMeetup();
     const meetup = await updateMeetup.execute({
       data: req.body,
       meetup: await meetupExists.execute({ id: req.params.id }),
