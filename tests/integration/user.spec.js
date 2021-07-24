@@ -14,9 +14,7 @@ describe('User', () => {
 
   it('should be able to register a user', async () => {
     const user = await factory.attrs('User');
-    const response = await request(app)
-      .post('/v1/users')
-      .send(user);
+    const response = await request(app).post('/v1/users').send(user);
 
     expect(response.body).toMatchObject({
       id: expect.any(Number),

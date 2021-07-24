@@ -45,26 +45,20 @@ describe('Session', () => {
   });
 
   it('should fail because user not exists', async () => {
-    const response = await request(app)
-      .post('/v1/sessions')
-      .expect(401)
-      .send({
-        email: faker.internet.email(),
-        password: faker.internet.password(),
-      });
+    const response = await request(app).post('/v1/sessions').expect(401).send({
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    });
 
     expect(response.body.message).toBe('User not found');
   });
 
   it('should fail because the password does not match', async () => {
     const { email } = await factory.create('User');
-    const response = await request(app)
-      .post('/v1/sessions')
-      .expect(400)
-      .send({
-        email,
-        password: faker.internet.password(),
-      });
+    const response = await request(app).post('/v1/sessions').expect(400).send({
+      email,
+      password: faker.internet.password(),
+    });
 
     expect(response.body.message).toBe('Password does not match');
   });

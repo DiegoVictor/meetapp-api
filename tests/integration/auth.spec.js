@@ -12,10 +12,7 @@ describe('Auth', () => {
   });
 
   it('should fail because a JWT token was not provided', async () => {
-    const response = await request(app)
-      .post('/v1')
-      .expect(401)
-      .send();
+    const response = await request(app).post('/v1').expect(401).send();
 
     expect(response.body.message).toBe('Token not provided');
   });

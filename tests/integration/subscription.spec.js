@@ -87,13 +87,11 @@ describe('Subscription', () => {
   it('should not be able to subscribe to meetups at the same date and time', async () => {
     const date = faker.date.future();
     const [{ id }, { id: user_id }] = await factory.createMany('User', 2);
-    const [
-      { id: meetup_id },
-      { id: other_meetup_id },
-    ] = await factory.createMany('Meetup', 2, {
-      user_id,
-      date,
-    });
+    const [{ id: meetup_id }, { id: other_meetup_id }] =
+      await factory.createMany('Meetup', 2, {
+        user_id,
+        date,
+      });
     const token = jwtoken(id);
 
     await request(app)
@@ -157,7 +155,7 @@ describe('Subscription', () => {
     const meetups = await factory.createMany('Meetup', 60, { user_id });
 
     await Promise.all(
-      meetups.map(meetup =>
+      meetups.map((meetup) =>
         factory.create('Subscription', { meetup_id: meetup.id, user_id: id })
       )
     );
