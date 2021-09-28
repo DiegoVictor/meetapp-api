@@ -14,6 +14,85 @@
     }
   ],
   "paths": {
+    "/sessions": {
+      "post": {
+        "tags": ["Sessions"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "title": "User",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "email": "johndoe@example.com",
+                "password": "123456"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authenticates user, return a Bearer Token and user's id and email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/User"
+                    }
+                  }
+                },
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzMsImlhdCI6MTYzMjE3NzUwNywiZXhwIjoxNjMyNzgyMzA3fQ.PXAPALSkvZfUNkV5g-0xjIXJmGugXkZPd1CUHRK9m18",
+                  "user": {
+                    "id": 33,
+                    "email": "johndoe@example.com",
+                    "name": "John Doe"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Token not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "error": "Unauthorized",
+                  "message": "Token not provided",
+                  "attributes": {
+                    "code": 441,
+                    "error": "Token not provided"
+                  },
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
