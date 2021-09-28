@@ -1,0 +1,18 @@
+{
+  "openapi":"3.0.2",
+  "info": {
+    "title":"Meetapp",
+    "version":"1.0",
+    "license": {
+      "name": "MIT",
+      "url": "https://raw.githubusercontent.com/DiegoVictor/meetapp-api/master/LICENSE"
+    }
+  },
+  "servers": [
+    {
+      "url":"http://localhost:3333/v1"
+    }
+  ],
+  "paths": {
+  },
+}
