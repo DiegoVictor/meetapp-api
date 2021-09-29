@@ -162,6 +162,96 @@
           }
         }
       },
+      "put": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "title": "User",
+                "properties": {
+                  "confirm_password": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "old_password": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "name": "John Doe",
+                "email": "johndoe@example.com",
+                "old_password": "123456",
+                "password": "123456",
+                "confirm_password": "123456"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update an existing users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                },
+                "example": {
+                  "id": 33,
+                  "email": "johndoe@example.com",
+                  "name": "John Doe"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Password does not match",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "Password does not match": {
+                    "value": {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "Password does not match",
+                      "code": 340,
+                      "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                    }
+                  },
+                  "Email already in use": {
+                    "value": {
+                      "statusCode": 400,
+                      "error": "Bad Request",
+                      "message": "Email already in use",
+                      "code": 341,
+                      "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     },
   },
   "components": {
