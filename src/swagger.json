@@ -252,6 +252,52 @@
         }
       }
     },
+    "/files": {
+      "post": {
+        "tags": ["Files"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["file"],
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Upload meetup banner",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/File"
+                },
+                "example": {
+                  "id": 21,
+                  "url": "http://localhost:3333/files/724dadb05342e69ecdad3bd77b98e40e.jpg",
+                  "name": "example.jpg",
+                  "path": "724dadb05342e69ecdad3bd77b98e40e.jpg",
+                  "updatedAt": "2021-09-20T22:52:40.929Z",
+                  "createdAt": "2021-09-20T22:52:40.929Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     },
   },
   "components": {
