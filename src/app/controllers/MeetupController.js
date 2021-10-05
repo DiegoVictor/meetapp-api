@@ -50,7 +50,7 @@ class MeetupController {
     const createMeetup = new CreateMeetup();
     const meetup = await createMeetup.execute({ data, userId });
 
-    return res.json(meetup);
+    return res.status(201).json(meetup);
   }
 
   async update(req, res) {
@@ -77,7 +77,7 @@ class MeetupController {
 
     await meetup.destroy();
 
-    return res.json(meetup);
+    return res.sendStatus(204);
   }
 }
 

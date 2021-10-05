@@ -10,7 +10,7 @@ class UserController {
     await emailAlreadyUsed.execute({ email: req.body.email });
 
     const { id, email, name } = await User.create(req.body);
-    return res.json({ id, email, name });
+    return res.status(201).json({ id, email, name });
   }
 
   async update(req, res) {

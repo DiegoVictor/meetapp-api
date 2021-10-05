@@ -66,7 +66,7 @@ class SubscriptionController {
       userId,
     });
 
-    return res.json(subscription);
+    return res.status(201).json(subscription);
   }
 
   async delete(req, res) {
@@ -87,7 +87,7 @@ class SubscriptionController {
 
     subscription.destroy();
 
-    return res.json(subscription);
+    return res.sendStatus(204);
   }
 }
 export default SubscriptionController;
