@@ -298,6 +298,129 @@
         }
       }
     },
+    "/meetups": {
+      "get": {
+        "tags": ["Meetups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "date",
+            "required": false,
+            "description": "ISO 8601",
+            "schema": {
+              "type": "string"
+            },
+            "example": "2021-09-21T17:56:53"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lists meetups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Meetup"
+                      },
+                      {
+                        "title": "Meetup",
+                        "properties": {
+                          "organizer": {
+                            "allOf": [
+                              {
+                                "$ref": "#/components/schemas/User"
+                              },
+                              {
+                                "title": "User",
+                                "properties": {
+                                  "createdAt": {
+                                    "type": "string"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "banner": {
+                            "$ref": "#/components/schemas/File"
+                          },
+                          "url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "example": [
+                  {
+                    "id": 37,
+                    "date": "2021-09-21T17:56:53.987Z",
+                    "description": "Laudantium excepturi neque est qui aut est qui laboriosam voluptatem. Omnis officia aut eligendi id. Cupiditate ad dolorum. Totam cupiditate facere quas reprehenderit est magni. Et possimus molestiae quo ut ex deleniti numquam. Aut sed accusamus rerum qui",
+                    "localization": "32109 Nayeli Motorway",
+                    "title": "Central Data Developer",
+                    "createdAt": "2021-09-20T23:00:04.507Z",
+                    "updatedAt": "2021-09-20T23:00:04.508Z",
+                    "user_id": 14,
+                    "banner_id": 21,
+                    "organizer": {
+                      "id": 14,
+                      "email": "Cielo67@gmail.com",
+                      "name": "Kari Donnelly",
+                      "password_hash": "$2a$08$ulO5MDQMdBk96i1hqaBSeOG3frY/3Np8317WnSHE2vWDMFpFySEnO",
+                      "createdAt": "2021-09-20T22:22:02.381Z",
+                      "updatedAt": "2021-09-20T22:22:02.381Z"
+                    },
+                    "banner": {
+                      "url": "http://localhost:3333/files/724dadb05342e69ecdad3bd77b98e40e.jpg",
+                      "id": 21,
+                      "name": "example.jpg",
+                      "path": "724dadb05342e69ecdad3bd77b98e40e.jpg",
+                      "createdAt": "2021-09-20T22:52:40.929Z",
+                      "updatedAt": "2021-09-20T22:52:40.929Z"
+                    },
+                    "url": "http://localhost:3333/v1/meetups/37"
+                  }
+                ]
+              }
+            },
+            "headers": {
+              "X-Total-Count": {
+                "description": "Total number of registries in the database",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Link": {
+                "description": "Next, Previous, First and Last page's urls",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+    },
     },
   },
   "components": {
