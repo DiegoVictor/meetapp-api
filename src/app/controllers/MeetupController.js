@@ -37,7 +37,7 @@ class MeetupController {
     }
 
     return res.json(
-      meetups.map(meetup => ({
+      meetups.map((meetup) => ({
         ...meetup.toJSON(),
         url: `${currentUrl}/${meetup.id}`,
       }))
