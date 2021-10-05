@@ -420,6 +420,111 @@
           }
         }
       },
+      "post": {
+        "tags": ["Meetups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "banner_id",
+                  "date",
+                  "description",
+                  "localization",
+                  "title"
+                ],
+                "properties": {
+                  "banner_id": {
+                    "type": "integer"
+                  },
+                  "date": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "localization": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "banner_id": 1,
+                "date": "2022-12-30",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+                "localization": "4795 Denesik Throughway Kaileefurt, NC 07927-4723",
+                "title": "Senior Creative Planner"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Create a new meetup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meetup"
+                },
+                "example": {
+                  "id": 41,
+                  "banner_id": 1,
+                  "date": "2022-12-30T00:00:00.000Z",
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+                  "localization": "4795 Denesik Throughway Kaileefurt, NC 07927-4723",
+                  "title": "Senior Creative Planner",
+                  "user_id": 33,
+                  "createdAt": "2021-09-20T23:50:42.141Z",
+                  "updatedAt": "2021-09-20T23:50:42.141Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Past dates are not permited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "error": "Bad Request",
+                  "message": "Past dates are not permited",
+                  "code": 140,
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The provided banner does not exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "error": "Not Found",
+                  "message": "The provided banner does not exists",
+                  "code": 141,
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     },
   },
