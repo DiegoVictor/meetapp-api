@@ -302,6 +302,37 @@
   },
   "components": {
     "schemas": {
+      "Meetup": {
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "banner_id": {
+            "type": "integer"
+          },
+          "date": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "localization": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "integer"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          }
+        }
+      },
       "User": {
         "properties": {
           "id": {
