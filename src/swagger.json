@@ -526,6 +526,149 @@
         }
       }
     },
+    "/meetups/{id}": {
+      "put": {
+        "tags": ["Meetups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "banner_id": {
+                    "type": "integer"
+                  },
+                  "date": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "localization": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "banner_id": 1,
+                "date": "2022-12-30",
+                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+                "localization": "4795 Denesik Throughway Kaileefurt, NC 07927-4723",
+                "title": "Senior Creative Planner"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Update a meetup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Meetup"
+                },
+                "example": {
+                  "id": 41,
+                  "banner_id": 1,
+                  "date": "2022-12-30T00:00:00.000Z",
+                  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat",
+                  "localization": "4795 Denesik Throughway Kaileefurt, NC 07927-4723",
+                  "title": "Senior Creative Planner",
+                  "user_id": 33,
+                  "createdAt": "2021-09-20T23:50:42.141Z",
+                  "updatedAt": "2021-09-20T23:50:42.141Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Past dates are not permited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "error": "Bad Request",
+                  "message": "Past dates are not permited",
+                  "code": 140,
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You can't edit past meetups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "error": "Unauthorized",
+                  "message": "You can't edit past meetups",
+                  "attributes": {
+                    "code": 142,
+                    "error": "You can't edit past meetups"
+                  },
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The provided banner does not exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "examples": {
+                  "The provided banner does not exists": {
+                    "value": {
+                      "statusCode": 404,
+                      "error": "Not Found",
+                      "message": "The provided banner does not exists",
+                      "code": 141,
+                      "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                    }
+                  },
+                  "Meetup does not exists": {
+                    "value": {
+                      "statusCode": 404,
+                      "error": "Not Found",
+                      "message": "Meetup does not exists",
+                      "code": 144,
+                      "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
     },
   },
   "components": {
