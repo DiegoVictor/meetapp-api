@@ -669,6 +669,67 @@
           }
         }
       },
+      "delete": {
+        "tags": ["Meetups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Delete a meetup"
+          },
+          "401": {
+            "description": "You can't remove past meetups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "error": "Unauthorized",
+                  "message": "You can't remove past meetups",
+                  "attributes": {
+                    "code": 143,
+                    "error": "You can't remove past meetups"
+                  },
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Meetup does not exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "error": "Not Found",
+                  "message": "Meetup does not exists",
+                  "code": 144,
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      }
     },
   },
   "components": {
