@@ -790,6 +790,99 @@
         }
       }
     },
+    "/scheduled/{id}": {
+      "get": {
+        "tags": ["Meetups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Show one logged in user's meetup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Meetup"
+                    },
+                    {
+                      "title": "Meetup",
+                      "properties": {
+                        "banner": {
+                          "$ref": "#/components/schemas/File"
+                        },
+                        "url": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "example": {
+                  "id": 1,
+                  "date": "2020-09-29T14:14:13.521Z",
+                  "description": "Et culpa sunt ullam. Aspernatur expedita est numquam. Veniam sunt eligendi eum soluta recusandae iure numquam excepturi ea. Vitae omnis dolorem.\n \rEst totam consectetur quo omnis a doloremque qui. Consequatur quia ipsum corrupti. Ab id impedit ut occaecat",
+                  "localization": "8831 Schaden Ports",
+                  "title": "Chief Web Engineer",
+                  "user_id": 22,
+                  "banner_id": 1,
+                  "banner": {
+                    "id": 1,
+                    "name": "parse_xss_fresh.png",
+                    "path": "b2c3b213bb89c3586d0d07b2c7eb2636.png",
+                    "url": "http://localhost:3333/files/b2c3b213bb89c3586d0d07b2c7eb2636.png",
+                    "createdAt": "2021-09-20T22:23:33.605Z",
+                    "updatedAt": "2021-09-20T22:23:33.605Z"
+                  },
+                  "url": "http://localhost:3333/v1/scheduled/1/1",
+                  "createdAt": "2021-09-20T23:00:04.501Z",
+                  "updatedAt": "2021-09-20T23:00:04.502Z"
+                }
+              }
+            },
+            "headers": {
+              "X-Total-Count": {
+                "description": "Total number of registries in the database",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Meetup does not exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "error": "Not Found",
+                  "message": "Meetup does not exists",
+                  "code": 144,
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
