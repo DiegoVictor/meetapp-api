@@ -1,4 +1,4 @@
-import { badRequest, unauthorized } from '@hapi/boom';
+import { badRequest, notFound, unauthorized } from '@hapi/boom';
 import { isBefore } from 'date-fns';
 import { Op } from 'sequelize';
 
@@ -28,7 +28,7 @@ class CreateSubscription {
     });
 
     if (!meetup) {
-      throw badRequest(
+      throw notFound(
         'Meetup does not exists or is owned by the provided user',
         { code: 240 }
       );
@@ -53,10 +53,9 @@ class CreateSubscription {
     });
 
     if (subscriptions.length > 0) {
-      throw unauthorized(
+      throw badRequest(
         'You are already subscribed to this meetup ' +
           'or there is another meetup in the same time',
-        'sample',
         { code: 242 }
       );
     }

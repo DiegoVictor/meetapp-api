@@ -1,4 +1,4 @@
-import { badRequest } from '@hapi/boom';
+import { notFound } from '@hapi/boom';
 import { Op } from 'sequelize';
 import { setHours, setMinutes, setSeconds } from 'date-fns';
 
@@ -80,7 +80,7 @@ class SubscriptionController {
     });
 
     if (!subscription) {
-      throw badRequest('Meetup or user does not exists', {
+      throw notFound('Meetup or user does not exists', {
         code: 244,
       });
     }

@@ -1,4 +1,4 @@
-import { badRequest } from '@hapi/boom';
+import { notFound } from '@hapi/boom';
 
 import Meetup from '../models/Meetup';
 
@@ -7,7 +7,7 @@ class MeetupExists {
     const meetup = await Meetup.findByPk(id);
 
     if (!meetup) {
-      throw badRequest('Meetup does not exists', { code: 144 });
+      throw notFound('Meetup does not exists', { code: 144 });
     }
 
     return meetup;

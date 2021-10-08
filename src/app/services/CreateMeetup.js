@@ -1,5 +1,5 @@
 import { isBefore } from 'date-fns';
-import { badRequest, unauthorized } from '@hapi/boom';
+import { badRequest, notFound } from '@hapi/boom';
 
 import Meetup from '../models/Meetup';
 import File from '../models/File';
@@ -10,7 +10,7 @@ class CreateMeetup {
 
     const banner = await File.findByPk(banner_id);
     if (!banner) {
-      throw unauthorized('The provided banner does not exists', 'sample', {
+      throw notFound('The provided banner does not exists', {
         code: 141,
       });
     }
