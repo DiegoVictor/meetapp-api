@@ -731,6 +731,65 @@
         }
       }
     },
+    "/scheduled": {
+      "get": {
+        "tags": ["Meetups"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lists logged in user's meetups",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Meetup"
+                      },
+                      {
+                        "title": "Meetup",
+                        "properties": {
+                          "url": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "example": [
+                  {
+                    "id": 2,
+                    "date": "2020-11-06T00:50:50.191Z",
+                    "description": "Iste harum veritatis laboriosam. Corrupti ab rerum non possimus expedita asperiores. Eum voluptatem repellendus autem nostrum. Quae mollitia dolorum omnis ut est.\n \rDolor aliquid voluptatem et dolore suscipit ullam omnis voluptatem saepe. Facere voluptatu",
+                    "localization": "782 Alfonso Streets",
+                    "title": "Future Directives Developer",
+                    "user_id": 33,
+                    "banner_id": 19,
+                    "url": "http://localhost:3333/v1/scheduled/2",
+                    "createdAt": "2021-09-20T23:00:04.502Z",
+                    "updatedAt": "2021-09-20T23:00:04.502Z"
+                  }
+                ]
+              }
+            },
+            "headers": {
+              "X-Total-Count": {
+                "description": "Total number of registries in the database",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
