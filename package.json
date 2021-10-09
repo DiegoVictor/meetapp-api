@@ -31,7 +31,8 @@
     "pg": "^8.6.0",
     "pg-hstore": "^2.3.3",
     "redis": "^3.1.2",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.6.5",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {
     "@sucrase/jest-plugin": "^2.0.0",
