@@ -1022,6 +1022,125 @@
           }
         }
       },
+      "post": {
+        "tags": ["Subscriptions"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "meetup_id"
+                ],
+                "properties": {
+                  "meetup_id": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "example": {
+                "meetup_id": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Subscribe yourself to a meetup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "title": "Subscription",
+                  "properties": {
+                    "id": {
+                      "type": "integer"
+                    },
+                    "meetup_id": {
+                      "type": "integer"
+                    },
+                    "user_id": {
+                      "type": "integer"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": 2,
+                  "meetup_id": 40,
+                  "user_id": 33,
+                  "createdAt": "2021-09-21T22:16:16.854Z",
+                  "updatedAt": "2021-09-21T22:16:16.854Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "You are already subscribed to this meetup or there is another meetup in the same time",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "error": "Bad Request",
+                  "message": "You are already subscribed to this meetup or there is another meetup in the same time",
+                  "code": 242,
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "You can't subscribe to a past meetup",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Unauthorized"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "error": "Unauthorized",
+                  "message": "You can't subscribe to a past meetup",
+                  "attributes": {
+                    "code": 241,
+                    "error": "You can't subscribe to a past meetup"
+                  },
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Meetup does not exists or is owned by the provided user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "error": "Not Found",
+                  "message": "Meetup does not exists or is owned by the provided user",
+                  "code": 240,
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      },
     }
   },
   "components": {
