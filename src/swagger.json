@@ -1141,6 +1141,56 @@
           }
         }
       },
+      "delete": {
+        "tags": ["Subscriptions"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "meetup_id"
+                ],
+                "properties": {
+                  "meetup_id": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "example": {
+                "meetup_id": 1
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Unsubscribe yourself from a meetup"
+          },
+          "404": {
+            "description": "Meetup or user does not exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "error": "Bad Request",
+                  "message": "Meetup or user does not exists",
+                  "code": 244,
+                  "docs": "https://github.com/DiegoVictor/meetapp-api#errors-reference"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
