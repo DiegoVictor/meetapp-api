@@ -883,6 +883,146 @@
         }
       }
     },
+    "/subscriptions": {
+      "get": {
+        "tags": ["Subscriptions"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lists logged in user's subscriptions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Meetup"
+                      },
+                      {
+                        "title": "Meetup",
+                        "properties": {
+                          "organizer": {
+                            "allOf": [
+                              {
+                                "$ref": "#/components/schemas/User"
+                              },
+                              {
+                                "title": "User",
+                                "properties": {
+                                  "createdAt": {
+                                    "type": "string"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            ]
+                          },
+                          "subscription": {
+                            "type": "array",
+                            "items": {
+                              "title": "Subscription",
+                              "properties": {
+                                "id": {
+                                  "type": "integer"
+                                },
+                                "user_id": {
+                                  "type": "integer"
+                                },
+                                "meetup_id":{
+                                  "type": "integer"
+                                },
+                                "createdAt": {
+                                  "type": "string"
+                                },
+                                "updatedAt": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          },
+                          "banner": {
+                            "$ref": "#/components/schemas/File"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "example": [
+                  {
+                    "id": 37,
+                    "date": "2021-09-21T17:56:53.987Z",
+                    "description": "Laudantium excepturi neque est qui aut est qui laboriosam voluptatem. Omnis officia aut eligendi id. Cupiditate ad dolorum. Totam cupiditate facere quas reprehenderit est magni. Et possimus molestiae quo ut ex deleniti numquam. Aut sed accusamus rerum qui",
+                    "localization": "32109 Nayeli Motorway",
+                    "title": "Central Data Developer",
+                    "user_id": 14,
+                    "banner_id": 21,
+                    "organizer": {
+                      "id": 14,
+                      "email": "Cielo67@gmail.com",
+                      "name": "Kari Donnelly",
+                      "createdAt": "2021-09-20T22:22:02.381Z",
+                      "updatedAt": "2021-09-20T22:22:02.381Z"
+                    },
+                    "subscription": [
+                      {
+                        "id": 1,
+                        "user_id": 33,
+                        "meetup_id": 37,
+                        "createdAt": "2021-09-21T00:47:31.053Z",
+                        "updatedAt": "2021-09-21T00:47:31.053Z"
+                      }
+                    ],
+                    "banner": {
+                      "id": 21,
+                      "name": "example.jpg",
+                      "path": "724dadb05342e69ecdad3bd77b98e40e.jpg",
+                      "url": "http://localhost:3333/files/724dadb05342e69ecdad3bd77b98e40e.jpg",
+                      "createdAt": "2021-09-20T22:52:40.929Z",
+                      "updatedAt": "2021-09-20T22:52:40.929Z"
+                    },
+                    "createdAt": "2021-09-20T23:00:04.507Z",
+                    "updatedAt": "2021-09-20T23:00:04.508Z"
+                  }
+                ]
+              }
+            },
+            "headers": {
+              "X-Total-Count": {
+                "description": "Total number of registries in the database",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Link": {
+                "description": "Next, Previous, First and Last page's urls",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+    }
   },
   "components": {
     "schemas": {
