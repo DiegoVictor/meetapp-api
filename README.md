@@ -205,14 +205,14 @@ GET http://localhost:3333/v1/subscriptions
 |`/users`|PUT|:x:|Body with user's `name`, `email` and `old_password`, `password` and `confirm_password`.|Update an existing users.|Bearer
 |`/files`|POST|:x:|Multipart payload with a `file` field with a image (See insomnia file for good example).|Upload meetup banner.|Bearer
 |`/meetups`|GET|:heavy_check_mark:|`page` query parameter.|Lists meetups.|Bearer
-|`/meetups`|POST|:x:|Body with meetup's banner_id `date`, `description`, `localization` and `title`.|Create meetups.|Bearer
+|`/meetups`|POST|:x:|Body with meetup's banner_id `date`, `description`, `localization` and `title`.|Create a new meetup.|Bearer
 |`/meetups`|PUT|:x:|Body with meetup's banner_id `date`, `description`, `localization` and `title`.|Update a meetup.|Bearer
-|`/meetups/:id`|DELETE|:x:|`id` of the meetup.|Delete a meetups.|Bearer
+|`/meetups/:id`|DELETE|:x:|`id` of the meetup.|Delete a meetup.|Bearer
 |`/scheduled`|GET|:x:| - |Lists logged in user's meetups.|Bearer
 |`/scheduled/:id`|GET|:x:|`id` of the meetup.|Show one logged in user's meetup.|Bearer
-|`/subscritions`|GET|:heavy_check_mark:| - |Lists logged in user's subscriptions.|Bearer
-|`/subscritions`|POST|:x:|Body with subscription's `meetup_id`.|Subscribe yourself to a meetup.|Bearer
-|`/subscritions/:id`|DELETE|:x:|Body with meetups's `id`.|Unsubscribe yourself from a meetup.|Bearer
+|`/subscriptions`|GET|:heavy_check_mark:| - |Lists logged in user's subscriptions.|Bearer
+|`/subscriptions`|POST|:x:|Body with subscription's `meetup_id`.|Subscribe yourself to a meetup.|Bearer
+|`/subscriptions`|DELETE|:x:|Body with subscription's `meetup_id`.|Unsubscribe yourself from a meetup.|Bearer
 
 > Routes with `Bearer` as auth method expect an `Authorization` header. See [Bearer Token](#bearer-token) section for more information.
 
