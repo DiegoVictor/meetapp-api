@@ -30,6 +30,9 @@ class MeetupAvailable {
       include: [
         {
           as: 'organizer',
+          attributes: {
+            exclude: ['password', 'password_hash'],
+          },
           model: User,
         },
         {
