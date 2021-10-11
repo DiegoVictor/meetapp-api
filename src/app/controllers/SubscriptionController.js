@@ -88,7 +88,7 @@ class SubscriptionController {
       });
     }
 
-    subscription.destroy();
+    await subscription.destroy();
 
     return res.sendStatus(204);
   }
