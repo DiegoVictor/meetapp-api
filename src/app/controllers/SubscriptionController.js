@@ -73,11 +73,11 @@ class SubscriptionController {
   }
 
   async delete(req, res) {
-    const { id } = req.params;
+    const { meetup_id } = req.body;
     const subscription = await Subscription.findOne({
       attributes: ['id'],
       where: {
-        meetup_id: id,
+        meetup_id,
         user_id: req.userId,
       },
     });
