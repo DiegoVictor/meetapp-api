@@ -1,14 +1,14 @@
 import { Router } from 'express';
 
 import SubscriptionController from '../app/controllers/SubscriptionController';
-import SubscriptionStore from '../app/validators/SubscriptionStore';
+import MeetupId from '../app/validators/MeetupId';
 
 const app = Router();
 
 const subscriptionController = new SubscriptionController();
 
 app.get('/subscriptions', subscriptionController.index);
-app.post('/subscriptions', SubscriptionStore, subscriptionController.store);
-app.delete('/subscriptions/:id', subscriptionController.delete);
+app.post('/subscriptions', MeetupId, subscriptionController.store);
+app.delete('/subscriptions', MeetupId, subscriptionController.delete);
 
 export default app;
