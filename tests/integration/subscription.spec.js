@@ -202,10 +202,10 @@ describe('Subscription', () => {
     });
 
     const response = await request(app)
-      .delete(`/v1/subscriptions/${meetup_id}`)
+      .delete(`/v1/subscriptions`)
       .set('Authorization', `Bearer ${token}`)
       .expect(204)
-      .send({});
+      .send({ meetup_id });
 
     expect(response.body).toMatchObject({});
   });
@@ -219,10 +219,10 @@ describe('Subscription', () => {
     const token = jwtoken(id);
 
     const response = await request(app)
-      .delete(`/v1/subscriptions/${meetup_id}`)
+      .delete(`/v1/subscriptions`)
       .set('Authorization', `Bearer ${token}`)
       .expect(404)
-      .send({});
+      .send({ meetup_id });
 
     expect(response.body.message).toBe('Meetup or user does not exists');
   });
