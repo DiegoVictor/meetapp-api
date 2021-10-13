@@ -38,7 +38,7 @@ describe('Subscription', () => {
     const response = await request(app)
       .post('/v1/subscriptions')
       .set('Authorization', `Bearer ${token}`)
-      .expect(400)
+      .expect(404)
       .send({ meetup_id });
 
     expect(response.body.message).toBe(
@@ -75,7 +75,7 @@ describe('Subscription', () => {
     const response = await request(app)
       .post('/v1/subscriptions')
       .set('Authorization', `Bearer ${token}`)
-      .expect(401)
+      .expect(400)
       .send({ meetup_id });
 
     expect(response.body.message).toBe(
@@ -102,7 +102,7 @@ describe('Subscription', () => {
     const response = await request(app)
       .post('/v1/subscriptions')
       .set('Authorization', `Bearer ${token}`)
-      .expect(401)
+      .expect(400)
       .send({ meetup_id: other_meetup_id });
 
     expect(response.body.message).toBe(
@@ -196,7 +196,7 @@ describe('Subscription', () => {
     const { id: meetup_id } = await factory.create('Meetup', { user_id });
     const token = jwtoken(id);
 
-    const { id: subscription_id } = await factory.create('Subscription', {
+    await factory.create('Subscription', {
       meetup_id,
       user_id: id,
     });
@@ -204,9 +204,10 @@ describe('Subscription', () => {
     const response = await request(app)
       .delete(`/v1/subscriptions/${meetup_id}`)
       .set('Authorization', `Bearer ${token}`)
+      .expect(204)
       .send({});
 
-    expect(response.body).toMatchObject({ id: subscription_id });
+    expect(response.body).toMatchObject({});
   });
 
   it('should not be able to remove a subscription that not exists', async () => {
@@ -220,7 +221,7 @@ describe('Subscription', () => {
     const response = await request(app)
       .delete(`/v1/subscriptions/${meetup_id}`)
       .set('Authorization', `Bearer ${token}`)
-      .expect(400)
+      .expect(404)
       .send({});
 
     expect(response.body.message).toBe('Meetup or user does not exists');
