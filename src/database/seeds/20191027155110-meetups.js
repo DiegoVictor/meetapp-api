@@ -1,15 +1,15 @@
 const faker = require('faker');
 
 module.exports = {
-  up: async queryInterface => {
+  up: async (queryInterface) => {
     const meetups = [];
     const users = await queryInterface.sequelize.query('SELECT id from users');
     const banners = await queryInterface.sequelize.query(
       'SELECT id from files'
     );
 
-    const users_id = users[0].map(user => user.id);
-    const banners_id = banners[0].map(banner => banner.id);
+    const users_id = users[0].map((user) => user.id);
+    const banners_id = banners[0].map((banner) => banner.id);
 
     for (let i = 0; i < 5; i += 1) {
       meetups.push({
@@ -42,7 +42,5 @@ module.exports = {
     return queryInterface.bulkInsert('meetups', meetups, {});
   },
 
-  down: queryInterface => {
-    return queryInterface.bulkDelete('meetups', null, {});
-  },
+  down: (queryInterface) => queryInterface.bulkDelete('meetups', null, {}),
 };
