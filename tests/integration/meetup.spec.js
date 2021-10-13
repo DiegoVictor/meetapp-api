@@ -63,6 +63,7 @@ describe('Meetup', () => {
     };
 
     delete organizerJson.password;
+    delete organizerJson.password_hash;
 
     expect(Array.isArray(response.body)).toBe(true);
     expect(response.body.length).toBe(1);
@@ -175,7 +176,7 @@ describe('Meetup', () => {
     const response = await request(app)
       .post(`/v1/meetups`)
       .set('Authorization', `Bearer ${token}`)
-      .expect(401)
+      .expect(404)
       .send(meetup);
 
     expect(response.body.message).toBe('The provided banner does not exists');
@@ -242,7 +243,7 @@ describe('Meetup', () => {
     const response = await request(app)
       .put(`/v1/meetups/${meetup_id}`)
       .set('Authorization', `Bearer ${token}`)
-      .expect(401)
+      .expect(404)
       .send({
         banner_id: banner.id,
       });
@@ -299,9 +300,10 @@ describe('Meetup', () => {
     const response = await request(app)
       .delete(`/v1/meetups/${meetup_id}`)
       .set('Authorization', `Bearer ${token}`)
+      .expect(204)
       .send();
 
-    expect(response.body).toMatchObject({ id: meetup_id });
+    expect(response.body).toMatchObject({});
   });
 
   it('should not be able to delete a past meetup', async () => {
@@ -332,7 +334,7 @@ describe('Meetup', () => {
     const response = await request(app)
       .delete(`/v1/meetups/${meetup.id}`)
       .set('Authorization', `Bearer ${token}`)
-      .expect(400)
+      .expect(404)
       .send();
 
     expect(response.body.message).toBe('Meetup does not exists');
