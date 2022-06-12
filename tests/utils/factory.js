@@ -1,5 +1,5 @@
 import { factory } from 'factory-girl';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 
 import File from '../../src/app/models/File';
 import Meetup from '../../src/app/models/Meetup';
@@ -16,7 +16,7 @@ factory.define('Meetup', Meetup, {
   date: faker.date.future,
   description: () => faker.lorem.paragraphs(1).slice(0, 254),
   localization: faker.address.streetAddress,
-  title: faker.name.title,
+  title: faker.lorem.words,
 });
 
 factory.define('Subscription', Subscription, {

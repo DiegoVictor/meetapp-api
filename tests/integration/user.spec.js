@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import request from 'supertest';
 
 import app from '../../src/app';

@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import request from 'supertest';
 
 import app from '../../src/app';
@@ -210,7 +210,7 @@ describe('Meetup', () => {
     const data = {
       description: faker.lorem.paragraphs(2),
       localization: faker.address.streetAddress(),
-      title: faker.name.title(),
+      title: faker.lorem.words(),
     };
     const response = await request(app)
       .put(`/v1/meetups/${meetup_id}`)
@@ -286,7 +286,7 @@ describe('Meetup', () => {
       .set('Authorization', `Bearer ${token}`)
       .expect(401)
       .send({
-        title: faker.name.title(),
+        title: faker.lorem.words(),
       });
 
     expect(response.body.message).toBe("You can't edit past meetups");

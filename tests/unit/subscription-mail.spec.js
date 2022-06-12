@@ -1,4 +1,4 @@
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { format, parseISO } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
@@ -14,7 +14,7 @@ describe('SubscriptionMail', () => {
         url: faker.image.imageUrl(),
       },
       date: faker.date.future().toISOString(),
-      title: faker.name.title(),
+      title: faker.lorem.words(),
     };
 
     const subscriptionMail = new SubscriptionMail();
