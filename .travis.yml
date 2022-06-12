@@ -5,5 +5,5 @@ install:
 node_js:
   - 16
 script:
-  - run run test
+  - npm run test
   - codecov
