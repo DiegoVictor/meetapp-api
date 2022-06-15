@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import exphbs from 'express-handlebars';
+import { create } from 'express-handlebars';
 import Nodemailer from 'nodemailer';
 import nodemailerhbs from 'nodemailer-express-handlebars';
 
@@ -19,7 +19,7 @@ class Mail {
       'compile',
       nodemailerhbs({
         extName: '.hbs',
-        viewEngine: exphbs.create({
+        viewEngine: create({
           defaultLayout: 'default',
           extname: '.hbs',
           layoutsDir: resolve(viewPath, 'layouts'),
