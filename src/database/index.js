@@ -11,8 +11,6 @@ const postgres = new Sequelize(database);
 
 export default () => {
   [User, File, Meetup, Subscription]
-    .map(model => model.init(postgres))
-    .map(model => {
-      return model.associate && model.associate(postgres.models);
-    });
+    .map((model) => model.init(postgres))
+    .map((model) => model.associate && model.associate(postgres.models));
 };
