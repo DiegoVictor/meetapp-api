@@ -7,9 +7,9 @@
 [![airbnb-style](https://flat.badgen.net/badge/style-guide/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 [![jest](https://img.shields.io/badge/jest-26.6.3-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
 [![coverage](https://img.shields.io/codecov/c/gh/DiegoVictor/meetapp-api?logo=codecov&style=flat-square)](https://codecov.io/gh/DiegoVictor/meetapp-api)
-[![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/DiegoVictor/meetapp-api/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/DiegoVictor/meetapp-api/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
-[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Meetapp&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Fmeetapp-api%2Fmaster%2FInsomnia_2021-09-21.json)
+[![Run in Insomnia}](https://insomnia.rest/images/run.svg)](https://insomnia.rest/run/?label=Meetapp&uri=https%3A%2F%2Fraw.githubusercontent.com%2FDiegoVictor%2Fmeetapp-api%2Fmain%2FInsomnia_2021-09-21.json)
 
 Responsible for provide data to the [`web`](https://github.com/DiegoVictor/meetapp-web) and [`mobile`](https://github.com/DiegoVictor/meetapp-app) front-ends. Allow users to create their meetups' and/or subscribe to from other users. The app has, pagination, pagination's link header (to previous, next, first and last page), friendly errors, use JWT to logins, validation, also a simple versioning was made.
 
