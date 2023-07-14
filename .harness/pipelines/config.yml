@@ -1,0 +1,32 @@
+pipeline:
+  name: meetapp-api
+  stages:
+    - stage:
+        identifier: test
+        name: test
+        type: CI
+        spec:
+          execution:
+            steps:
+              - step:
+                  identifier: npminstall
+                  name: NPM Install
+                  spec:
+                    command: npm install
+                  type: Run
+              - step:
+                  identifier: npmtest
+                  name: Run Tests
+                  spec:
+                    command: npm run test
+                  type: Run
+              - step:
+                  type: Run
+                  name: Upload Coverage Results
+                  identifier: Coverage
+                  spec:
+                    shell: Sh
+                    command: |-
+                      curl -Os https://uploader.codecov.io/latest/linux/codecov
+                      chmod +x codecov
+                      ./codecov
