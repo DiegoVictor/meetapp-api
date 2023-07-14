@@ -6,6 +6,12 @@ pipeline:
         name: test
         type: CI
         spec:
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
           execution:
             steps:
               - step:
