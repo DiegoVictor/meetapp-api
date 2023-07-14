@@ -1,0 +1,14 @@
+inputSet:
+  name: Build_meetapp_api_1689340884107-pr-trigger-input-set
+  identifier: Build_meetapp_api_1689340884107prtriggerinputset
+  orgIdentifier: default
+  projectIdentifier: Meetapp_API
+  pipeline:
+    identifier: Build_meetapp_api_1689340884107
+    properties:
+      ci:
+        codebase:
+          build:
+            type: PR
+            spec:
+              number: <+trigger.prNumber>
