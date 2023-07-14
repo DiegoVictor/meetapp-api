@@ -6,6 +6,7 @@ pipeline:
         name: test
         type: CI
         spec:
+          cloneCodebase: true
           platform:
             os: Linux
             arch: Amd64
