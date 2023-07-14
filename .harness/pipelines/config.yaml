@@ -1,5 +1,10 @@
 pipeline:
   name: meetapp-api
+  properties:
+    ci:
+      codebase:
+        connectorRef: Github_OAuth_1689338959138
+        build: <+input>
   stages:
     - stage:
         identifier: test
