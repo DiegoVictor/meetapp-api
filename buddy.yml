@@ -1,0 +1,24 @@
+- pipeline: "Pipeline"
+  events:
+  - type: "PUSH"
+    refs:
+    - "refs/heads/main"
+  fail_on_prepare_env_warning: true
+  actions:
+  - action: "Run tests"
+    type: "BUILD"
+    docker_image_name: "library/node"
+    docker_image_tag: "20"
+    execute_commands:
+      - "npm ci"
+      - "npm run test"
+    shell: "BASH"
+  - action: "Upload to Codecov"
+    type: "BUILD"
+    docker_image_name: "library/ubuntu"
+    docker_image_tag: "20.04"
+    execute_commands:
+      - "curl -Os https://uploader.codecov.io/latest/linux/codecov"
+      - "chmod +x codecov"
+      - "./codecov"
+    shell: "BASH"
