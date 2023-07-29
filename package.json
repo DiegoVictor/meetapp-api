@@ -8,7 +8,8 @@
     "queue": "nodemon src/queue.js",
     "build": "sucrase ./src -d ./dist --transforms imports",
     "start": "node dist/server.js",
-    "pretest": "set NODE_ENV=test&&sequelize db:migrate:undo:all&&sequelize db:migrate",
+    "migrate:clean": "sequelize db:migrate:undo:all && sequelize db:migrate",
+    "pretest": "cross-env-shell NODE_ENV=test npm run migrate:clean",
     "test": "jest --runInBand",
     "posttest": "rm tests/database.sqlite"
   },
