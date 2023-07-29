@@ -12,6 +12,8 @@
     execute_commands:
       - "npm ci"
       - "npm run test"
+    setup_commands:
+      - "apt-get -y update && apt-get -y install curl"
     shell: "BASH"
   - action: "Upload to Codecov"
     type: "BUILD"
