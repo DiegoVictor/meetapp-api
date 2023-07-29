@@ -1,5 +1,5 @@
 # [API] Meetapp
-[![Travis (.com)](https://img.shields.io/travis/com/DiegoVictor/meetapp-api?logo=travis&style=flat-square)](https://travis-ci.com/DiegoVictor/meetapp-api)
+[![buddy pipeline](https://app.buddy.works/diegovictor-github/meetapp-api/pipelines/pipeline/461139/badge.svg?token=c159fed54bb24f01312ce661e41d6d2194e77a116a43e096fa27e82d5b0245e0 "buddy pipeline")](https://app.buddy.works/diegovictor-github/meetapp-api/pipelines/pipeline/461139)
 [![postgres](https://img.shields.io/badge/postgres-8.6.0-326690?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![redis](https://img.shields.io/badge/redis-3.1.2-d92b21?style=flat-square&logo=redis&logoColor=white)](https://redis.io/)
 [![nodemon](https://img.shields.io/badge/nodemon-2.0.12-76d04b?style=flat-square&logo=nodemon)](https://nodemon.io/)
