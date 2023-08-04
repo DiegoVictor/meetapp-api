@@ -7,15 +7,15 @@ import User from '../../src/app/models/User';
 import Subscription from '../../src/app/models/Subscription';
 
 factory.define('File', File, {
-  name: faker.image.image,
-  path: faker.datatype.uuid,
+  name: faker.image.url,
+  path: faker.string.uuid,
 });
 
 factory.define('Meetup', Meetup, {
   banner_id: null,
   date: faker.date.future,
   description: () => faker.lorem.paragraphs(1).slice(0, 254),
-  localization: faker.address.streetAddress,
+  localization: faker.location.streetAddress,
   title: faker.lorem.words,
 });
 
@@ -26,7 +26,7 @@ factory.define('Subscription', Subscription, {
 
 factory.define('User', User, {
   email: faker.internet.email,
-  name: faker.name.findName,
+  name: faker.person.fullName,
   password: faker.internet.password,
 });
 

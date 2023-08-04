@@ -11,7 +11,7 @@ describe('SubscriptionMail', () => {
     const { email, name } = await factory.attrs('User');
     const meetup = {
       banner: {
-        url: faker.image.imageUrl(),
+        url: faker.image.url(),
       },
       date: faker.date.future().toISOString(),
       title: faker.lorem.words(),

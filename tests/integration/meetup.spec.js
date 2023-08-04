@@ -209,7 +209,7 @@ describe('Meetup', () => {
     const token = jwtoken(id);
     const data = {
       description: faker.lorem.paragraphs(2),
-      localization: faker.address.streetAddress(),
+      localization: faker.location.streetAddress(),
       title: faker.lorem.words(),
     };
     const response = await request(app)

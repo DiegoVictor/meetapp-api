@@ -19,7 +19,7 @@ describe('Auth', () => {
 
   it('should fail because a invalid JWT token was not provided', async () => {
     const { id } = await factory.create('User');
-    const token = jwtoken(id) + faker.random.alphaNumeric();
+    const token = jwtoken(id) + faker.string.alphanumeric();
     const response = await request(app)
       .post('/v1')
       .set('Authorization', `Bearer ${token}`)
