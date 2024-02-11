@@ -6,9 +6,7 @@ import helmet from 'helmet';
 import path from 'path';
 import { isBoom } from '@hapi/boom';
 import { errors } from 'celebrate';
-import swagger from 'swagger-ui-express';
 
-import swaggerDocument from './swagger.json';
 import routes from './routes';
 import routeAliases from './app/middlewares/routeAliases';
 import database from './database';
@@ -26,7 +24,6 @@ app.use(
   express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
 );
 
-app.use('/docs', swagger.serve, swagger.setup(swaggerDocument));
 app.use(routeAliases);
 app.use('/v1', routes);
 
