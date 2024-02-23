@@ -10,8 +10,6 @@ jobs:
       - node/install-packages:
           cache-path: ~/meetapp-api/node_modules
       - run: npm run test
-        environment:
-          JWT_EXPIRATION_TIME: 7d
       - codecov/upload:
           file: tests/coverage/*.json
 workflows:
