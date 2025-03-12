@@ -1,5 +1,5 @@
 # [API] Meetapp
-![CircleCI](https://img.shields.io/circleci/build/github/DiegoVictor/meetapp-api?style=flat-square&logo=circleci)
+[![CircleCI](https://img.shields.io/circleci/build/github/DiegoVictor/meetapp-api?style=flat-square&logo=circleci)](https://app.circleci.com/pipelines/github/DiegoVictor/meetapp-api?branch=main)
 [![postgres](https://img.shields.io/badge/postgres-8.11.2-326690?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![redis](https://img.shields.io/badge/redis-4.6.7-d92b21?style=flat-square&logo=redis&logoColor=white)](https://redis.io/)
 [![nodemon](https://img.shields.io/badge/nodemon-3.0.1-76d04b?style=flat-square&logo=nodemon)](https://nodemon.io/)
