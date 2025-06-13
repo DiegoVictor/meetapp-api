@@ -16,11 +16,11 @@ Responsible for provide data to the [`web`](https://github.com/DiegoVictor/meeta
 ## Table of Contents
 * [Installing](#installing)
   * [Configuring](#configuring)
+    * [.env](#env)
     * [Redis](#redis)
     * [Postgres](#postgres)
       * [Migrations](#migrations)
       * [Seed](#seed)
-    * [.env](#env)
 * [Usage](#usage)
   * [Error Handling](#error-handling)
     * [Errors Reference](#errors-reference)
@@ -50,6 +50,30 @@ The application uses two databases: [Postgres](https://www.postgresql.org/) and 
 ```
 $ docker-compose up -d
 ```
+
+### .env
+In this file you may configure your Redis database connection, JWT settings, the environment, app's port and a url to documentation (this will be returned with error responses, see [error section](#error-handling)). Rename the `.env.example` in the root directory to `.env` then just update with your settings.
+
+|key|description|default
+|---|---|---
+|APP_URL|App's url.|`http://localhost`
+|APP_PORT|Port number where the app will run.|`3333`
+|NODE_ENV|App environment.|`development`
+|JWT_SECRET|A alphanumeric random string. Used to create signed tokens.| -
+|JWT_EXPIRATION_TIME|How long time will be the token valid. See [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#usage) repo for more information.|`7d`
+|DB_HOST|Postgres host.| `pg`
+|DB_PORT|Postgres port.| `5432`
+|DB_USER|Postgres user.| -
+|DB_PASS|Postgres password.| -
+|DB_NAME|| `meetapp`
+|MAIL_HOST|SMTP service's host.| `smtp.mailtrap.io`
+|MAIL_PORT|SMTP service's port.| `2525`
+|MAIL_USER|SMTP service's user| -
+|MAIL_PASS|SMTP service's password| -
+|REDIS_HOST|Redis host.|`redis`
+|REDIS_PORT|Redis port.|`6379`
+|SEQUELIZE_LOG|Indicates whether sequelize query operation logs should be shown.|`0`
+|DOCS_URL|An url to docs where users can find more information about the app's internal code errors.|`https://github.com/DiegoVictor/meetapp-api#errors-reference`
 
 ### Redis
 Responsible to store data utilized by the mail queue. If for any reason you would like to create a Redis container instead of use `docker-compose`, you can do it by running the following command:
@@ -83,31 +107,6 @@ Or:
 ```
 $ yarn sequelize db:seed:all
 ```
-
-### .env
-In this file you may configure your Redis database connection, JWT settings, the environment, app's port and a url to documentation (this will be returned with error responses, see [error section](#error-handling)). Rename the `.env.example` in the root directory to `.env` then just update with your settings.
-
-|key|description|default
-|---|---|---
-|APP_URL|App's url.|`http://localhost`
-|APP_PORT|Port number where the app will run.|`3333`
-|NODE_ENV|App environment.|`development`
-|JWT_SECRET|A alphanumeric random string. Used to create signed tokens.| -
-|JWT_EXPIRATION_TIME|How long time will be the token valid. See [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken#usage) repo for more information.|`7d`
-|DB_HOST|Postgres host.| `pg`
-|DB_PORT|Postgres port.| `5432`
-|DB_USER|Postgres user.| -
-|DB_PASS|Postgres password.| -
-|DB_NAME|| `meetapp`
-|MAIL_HOST|SMTP service's host.| `smtp.mailtrap.io`
-|MAIL_PORT|SMTP service's port.| `2525`
-|MAIL_USER|SMTP service's user| -
-|MAIL_PASS|SMTP service's password| -
-|REDIS_HOST|Redis host.|`redis`
-|REDIS_PORT|Redis port.|`6379`
-|SEQUELIZE_LOG|Indicates whether sequelize query operation logs should be shown.|`0`
-|DOCS_URL|An url to docs where users can find more information about the app's internal code errors.|`https://github.com/DiegoVictor/meetapp-api#errors-reference`
-
 
 # Usage
 To start up the app run:
